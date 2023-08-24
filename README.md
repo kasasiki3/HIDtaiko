@@ -8,6 +8,8 @@
 
 ![a.png](images/images/a.png)
 
+![e.png](images/images/e.png)
+
 # 作り方
 
 ## 1.準備
@@ -42,6 +44,8 @@ pro microのGNDにすべてのピエゾ素子を-を接続
 
 a0=左ふち a1=左面 a2=右面 a3が右ふち
 
+
+![f.png](images/images/f.png)
 ピエゾ素子を画像の場所に張り付ける
 ケーブルを通す穴を開け、promicroを筐体の外に出す
 
