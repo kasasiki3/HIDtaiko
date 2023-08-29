@@ -1,6 +1,9 @@
 # HIDtaiko
 低コストで高性能なおうち太鼓を作ることを目標としています。
 
+質問やお問い合わせ
+https://twitter.com/kasashiki
+
 ![c.png](images/images/c.png)
 
 ![b.png](images/images/b.png)
@@ -51,7 +54,7 @@ a0=左ふち a1=左面 a2=右面 a3が右ふち
 
 sketchをpromicroに書き込む
 
-共振する場合は防振スポンジを挟むと改善する場合がある
+共振する場合は防振スポンジを挟むと改善します。
 
 
 
