@@ -3,6 +3,8 @@
 
 質問やお問い合わせ
 https://twitter.com/kasashiki
+ビルドガイド
+https://zenn.dev/kasashiki/articles/7bf286b8120f90
 
 ![c.png](images/images/c.png)
 
