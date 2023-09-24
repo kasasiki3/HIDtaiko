@@ -14,7 +14,9 @@ https://zenn.dev/kasashiki/articles/7bf286b8120f90
 
 
 ![a.png](images/images/a.png)
-![ff.png](images/images/c.png)
+
+![ff.png](images/images/ff.png)
+
 ![e.png](images/images/e.png)
 
 
