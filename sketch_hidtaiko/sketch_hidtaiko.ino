@@ -16,8 +16,8 @@ long int ti3 =  0;
 long int ti0 =  0;
 long int time =  0;
 long int ti = 0;
-long int A = 7;
-long int B = 5.5;
+long int A = 25;//キーごと
+long int B = 18; //全体
 void setup() {
   Serial.begin(9600);
   Keyboard.begin();
