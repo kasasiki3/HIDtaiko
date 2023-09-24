@@ -19,6 +19,17 @@ https://zenn.dev/kasashiki/articles/7bf286b8120f90
 
 ![e.png](images/images/e.png)
 
+| 部品 | 数量 | 品番 |
+| ---- | ---- | ---- |
+| 防振ゴム | 14 | VD2-2020M6 |
+| M6ネジ | 14 | M6L16 |
+| M6ナット |14 | https://amzn.to/46tSW4z |
+| M6ワッシャー | 14 | https://amzn.to/3PApOmi |
+|ラワンベニヤ | 12mm | ホームセンター |  
+|pro micro | 1 | https://amzn.to/46cFQbs |
+|1MΩ | 4 | https://amzn.to/48cAkrj |
+|圧電素子| 4 | https://amzn.to/3sQl5UF |
+
 
 
 
