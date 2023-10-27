@@ -30,7 +30,7 @@ https://zenn.dev/kasashiki/articles/7bf286b8120f90
 |1MΩ | 4 | https://amzn.to/3towuvm |
 |圧電素子| 4 | https://amzn.to/3PJprVA |
 
-#ライセンス
+# ライセンス
 MIT
 
 
