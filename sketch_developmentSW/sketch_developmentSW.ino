@@ -1,8 +1,22 @@
-#include <Keyboard.h>
-#include <SwitchControlLibrary.h>
-int de = 200;
-int aa = 12;
+/*
+   Copyright [2023] [kasashiki]
 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+#include <SwitchControlLibrary.h>
+int aa = 15;
+int cc = 20;
 const int A1pin = A1;
 const int A2pin = A2;
 const int A0pin = A0; 
@@ -35,13 +49,24 @@ long int ti = 0;
 
 void setup() {
   Serial.begin(9600);
-  Keyboard.begin();
-  pinMode(2, INPUT_PULLUP);
-  pinMode(3, INPUT_PULLUP);
-  pinMode(4, INPUT_PULLUP);
-  pinMode(5, INPUT_PULLUP);
-  pinMode(6, INPUT_PULLUP);
-  pinMode(7, INPUT_PULLUP); 
+    SwitchControlLibrary().pressButton(Button::LCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(400);
+  SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().pressButton(Button::LCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(400);
+  SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().pressButton(Button::LCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(400);
+  SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
 
 }
 
@@ -53,10 +78,9 @@ void loop() {
   time = millis();
 
   if (a3 - sv3 >= f && time - ti3 > A && time- ti > C) {//Button::LCLICK
-  Keyboard.write('F');
   SwitchControlLibrary().pressButton(Button::LCLICK);
   SwitchControlLibrary().sendReport();
-  delay(aa);
+  delay(cc);
   SwitchControlLibrary().releaseButton(Button::LCLICK); 
   SwitchControlLibrary().sendReport(); 
   delay(aa);
@@ -65,10 +89,9 @@ void loop() {
   ti = millis();
   }
     if (a0 - sv0 >= d && time - ti0 > A && time- ti > C) {//Button::R
-  Keyboard.write('K'); 
   SwitchControlLibrary().pressButton(Button::ZR);
   SwitchControlLibrary().sendReport();
-  delay(aa);
+  delay(cc);
   SwitchControlLibrary().releaseButton(Button::ZR); 
   SwitchControlLibrary().sendReport(); 
   delay(aa);
@@ -76,11 +99,9 @@ void loop() {
   ti = millis();
   }
     if (a1 - sv1 >= j && time - ti1 > A && time- ti > B) { //Button::RCLICK
-  Keyboard.write('J');
-  
   SwitchControlLibrary().pressButton(Button::RCLICK);
   SwitchControlLibrary().sendReport();
-  delay(aa);
+  delay(cc);
   SwitchControlLibrary().releaseButton(Button::RCLICK); 
   SwitchControlLibrary().sendReport(); 
   delay(aa);
@@ -88,10 +109,9 @@ void loop() {
   ti = millis();
   }
     if (a2 - sv2 >= d && time - ti2 > A && time- ti > B) {//Button::L
-  Keyboard.write('D');
   SwitchControlLibrary().pressButton(Button::ZL);
   SwitchControlLibrary().sendReport(); 
-  delay(aa);
+  delay(cc);
   SwitchControlLibrary().releaseButton(Button::ZL); 
   SwitchControlLibrary().sendReport(); 
   delay(aa);
