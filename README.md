@@ -1,4 +1,4 @@
-# HIDtaiko Ver.1
+# HIDtaiko Ver.1.2
 低コストで高性能なおうち太鼓を作ることを目標としています。
 
 a0=左ふち a1=左ドン a2=右ドン a3が右ふち
@@ -7,18 +7,18 @@ a0=左ふち a1=左ドン a2=右ドン a3が右ふち
 https://twitter.com/kasashiki
 ビルドガイド
 https://zenn.dev/kasashiki/articles/7bf286b8120f90
+https://zenn.dev/kasashiki/articles/37b92005e467f9
+youtube
+https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 
-![c.png](images/images/c.png)
-
-![b.png](images/images/b.png)
-
-
-![a.png](images/images/a.png)
-
-![ff.png](images/images/ff.png)
-
+![front.png.png](images/images/front.png)
+![legs.png](images/images/legs.png)
+![IMG_1291.JPG](images/images/IMG_1291.JPG)
+![rear.png](images/images/rear.png)
 ![e.png](images/images/e.png)
 
+
+# BOM
 | 部品 | 数量 | 品番 |
 | ---- | ---- | ---- |
 | 防振ゴム | 14 |VD2-2015M6|
@@ -29,9 +29,12 @@ https://zenn.dev/kasashiki/articles/7bf286b8120f90
 |pro micro | 1 | https://amzn.to/3PINKD6 |
 |1MΩ | 4 | https://amzn.to/3towuvm |
 |圧電素子| 4 | https://amzn.to/3PJprVA |
+|工作用ケーブル|1 |https://amzn.to/3Msf9Ik|
+|熱収縮チューブ|1 |https://amzn.to/3snJRvB|　
+|隙間スポンジテープ|1 |ダイソーの物がおすすめ|　
 
 ## License
-*** by xxx, yyy, and zzz is licensed under the Apache License, Version2.0
+*** by kasashiki is licensed under the Apache License, Version2.0
 
 
 
