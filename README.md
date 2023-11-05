@@ -13,7 +13,6 @@ https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 
 ![front.png.png](images/images/front.png)
 ![legs.png](images/images/legs.png)
-![IMG_1291.JPG](images/images/IMG_1291.JPG)
 ![rear.png](images/images/rear.png)
 ![e.png](images/images/e.png)
 
