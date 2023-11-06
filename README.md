@@ -2,8 +2,7 @@
 
 様々な機能を追加でき、改造もしやすく、安価で入手しやすい部品で作れるようになっているのがHIDtaikoの特徴です。
 
-
-報告　質問　お問合せ
+お問合せ
 https://twitter.com/kasashiki
 ビルドガイド
 https://zenn.dev/kasashiki/articles/7bf286b8120f90
