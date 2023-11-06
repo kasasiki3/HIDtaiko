@@ -2,17 +2,20 @@
 低コストで高性能なおうち太鼓を作ることを目標としています。
 
 
-質問やお問い合わせ
+報告　質問　お問合せ
 https://twitter.com/kasashiki
 ビルドガイド
 https://zenn.dev/kasashiki/articles/7bf286b8120f90
-
 youtube
 https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 
-# gigigiｍ
-switch対応にあたってcelclow氏の[SwitchControlLibrary](https://github.com/celclow/SwitchControlLibrary#switch-control-library)を使わせていただきました。
-
+# 説明
+ switch対応にあたってcelclow氏の[SwitchControlLibrary](https://github.com/celclow/SwitchControlLibrary#switch-control-library)を使わせていただきました。
+ [接続器ver1.2](HIDtaiko_connector_ver1.2)プリント基板、3dプリントケースを使う本格的な接続器です。pcとswitchのモード切替、簡易的なキーボードが搭載されています。
+ [switch](sketch_developmentSW)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
+ [PC](sketch_hidtaiko)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
+ 
+ 
 ![front.png.png](images/images/front.png)
 ![legs.png](images/images/legs.png)
 ![rear.png](images/images/rear.png)
