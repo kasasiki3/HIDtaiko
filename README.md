@@ -1,6 +1,6 @@
 # HIDtaiko Ver.1.2
 低コストで高性能なおうち太鼓を作ることを目標としています。
-a0=左ふち a1=左ドン a2=右ドン a3が右ふち
+
 
 質問やお問い合わせ
 https://twitter.com/kasashiki
@@ -9,6 +9,9 @@ https://zenn.dev/kasashiki/articles/7bf286b8120f90
 
 youtube
 https://www.youtube.com/watch?v=Z8ZBOPpMMD8
+
+# gigigiｍ
+switch対応にあたってcelclow氏の[SwitchControlLibrary](https://github.com/celclow/SwitchControlLibrary#switch-control-library)を使わせていただきました。
 
 ![front.png.png](images/images/front.png)
 ![legs.png](images/images/legs.png)
