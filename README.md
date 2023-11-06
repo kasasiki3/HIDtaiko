@@ -1,5 +1,6 @@
-# HIDtaiko Ver.1.2
-低コストで高性能なおうち太鼓を作ることを目標としています。
+# HIDtaiko Ver.1.2 低コストで高性能なおうち太鼓を作ることを目標としています。
+
+様々な機能を追加でき、改造もしやすく、安価で入手しやすい部品で作れるようになっているのがHIDtaikoの特徴です。
 
 
 報告　質問　お問合せ
@@ -10,13 +11,14 @@ youtube
 https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 
 # 説明
- switch対応にあたってcelclow氏の[SwitchControlLibrary](https://github.com/celclow/SwitchControlLibrary#switch-control-library)を使わせていただきました。
+
+ #### switch対応にあたってcelclow氏の[SwitchControlLibrary](https://github.com/celclow/SwitchControlLibrary#switch-control-library)を使わせていただきました。
  
- [接続器ver1.2](HIDtaiko_connector_ver1.2)プリント基板、3dプリントケースを使う本格的な接続器です。pcとswitchのモード切替、簡易的なキーボードが搭載されています。
+ #### [接続器ver1.2](HIDtaiko_connector_ver1.2)プリント基板、3dプリントケースを使う本格的な接続器です。pcとswitchのモード切替、簡易的なキーボードが搭載されています。
  
- [switch](sketch_developmentSW)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
+ #### [switch](sketch_developmentSW)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
  
- [PC](sketch_hidtaiko)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
+ #### [PC](sketch_hidtaiko)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
  
  
 ![front.png.png](images/images/front.png)
