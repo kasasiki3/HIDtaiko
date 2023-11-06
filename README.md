@@ -1,13 +1,12 @@
 # HIDtaiko Ver.1.2
 低コストで高性能なおうち太鼓を作ることを目標としています。
-
 a0=左ふち a1=左ドン a2=右ドン a3が右ふち
 
 質問やお問い合わせ
 https://twitter.com/kasashiki
 ビルドガイド
 https://zenn.dev/kasashiki/articles/7bf286b8120f90
-https://zenn.dev/kasashiki/articles/37b92005e467f9
+
 youtube
 https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 
@@ -35,6 +34,4 @@ https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 ## License
 *** by kasashiki is licensed under the Apache License, Version2.0
 
-
-
-
+#自作おうち太鼓#HIDtaiko#接続器
