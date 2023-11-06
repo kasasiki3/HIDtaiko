@@ -11,8 +11,11 @@ https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 
 # 説明
  switch対応にあたってcelclow氏の[SwitchControlLibrary](https://github.com/celclow/SwitchControlLibrary#switch-control-library)を使わせていただきました。
+ 
  [接続器ver1.2](HIDtaiko_connector_ver1.2)プリント基板、3dプリントケースを使う本格的な接続器です。pcとswitchのモード切替、簡易的なキーボードが搭載されています。
+ 
  [switch](sketch_developmentSW)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
+ 
  [PC](sketch_hidtaiko)このスケッチは簡易的なもので、おうち太鼓以外の機能を搭載していません。
  
  
