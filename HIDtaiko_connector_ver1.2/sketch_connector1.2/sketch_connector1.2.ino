@@ -17,7 +17,7 @@
 
 #include <Keyboard.h>
 #include <SwitchControlLibrary.h>
-int de = 180;
+int de = 160;
 const int A1pin = A1;
 const int A2pin = A2;
 const int A0pin = A0; 
@@ -26,21 +26,21 @@ const int A3pin = A3;
 
 //(PC)それぞれの数値を変更することで感度を調節ができます。　例 int lefts = 75;   
 int lefts = 60;           //左カッ　
-int middlelefts = 60;     //左ドン  
+int middlelefts = 25;     //左ドン  
 int middlerights = 25;    //右ドン　
-int rights = 30;          //右カッ　
+int rights = 60;          //右カッ　
 
-//(PC)叩いた時に入力されるキーを変更できます。例 left = 'y' 
-char left = 'd'        //左カッ
-char middleleft = 'f'  //左ドン
-char middletight = 'j' //右ドン
-char right = 'k'       //右カッ
+//(PC)叩いた時に入力されるキーを変更できます。例 left = 'y';
+char left = 'd';        //左カッ
+char middleleft = 'f';  //左ドン
+char middletight = 'j'; //右ドン
+char right = 'k';       //右カッ
 
 /*(PC)Aはどれかのキーが入力されてから、そのキーの次の入力を受け付けない時間です。
 (PC)Bはどれかのキーが入力されてから、4キーすべての入力を受け付けない時間です。
 */
-char A = 9; //キー単体のdelay
-char B = 15; //キー全体のdelay
+char A = 13; //キー単体のdelay
+char B = 17; //キー全体のdelay
 
 //SW(調節はお勧めしません)
 int aa = 15; //入力のdelay
@@ -120,7 +120,7 @@ void loop() {
   ti = millis();
   }
     if (a2 - sv2 >= middlerights && time - ti2 > A && time- ti > B) {
-  Keyboard.write(middleright);
+  Keyboard.write(middletight);
   ti2 = millis();
   ti = millis();
   }
@@ -129,30 +129,30 @@ void loop() {
   sv1 = a1;
   sv2 = a2;
     if (digitalRead(2) == LOW) {
+  Keyboard.write(KEY_UP_ARROW);  //上左
+  delay(de);
+  }
+
+  if (digitalRead(3) == LOW) {//上中　 KEY_ESC) KEY_DOWN_ARROW KEY_RETURN
   Keyboard.write(KEY_RETURN); 
   delay(de);
   }
 
-  if (digitalRead(3) == LOW) {//左上　 KEY_ESC) KEY_DOWN_ARROW KEY_RETURN
-  Keyboard.write(KEY_RETURN); 
+  if (digitalRead(4) == LOW) { //上右
+  Keyboard.write(KEY_F1); 
   delay(de);
   }
 
-  if (digitalRead(4) == LOW) { //右下
-  Keyboard.write(KEY_DOWN_ARROW); 
+  if (digitalRead(5) == LOW) { //下右
+  Keyboard.write(KEY_INSERT); 
   delay(de);
   }
-
-  if (digitalRead(5) == LOW) { //右上
-  Keyboard.write(KEY_UP_ARROW); 
-  delay(de);
-  }
-    if (digitalRead(6) == LOW) {//左下
+    if (digitalRead(6) == LOW) {//下中
   Keyboard.write(KEY_ESC); 
   delay(de);
   }
-    if (digitalRead(7) == LOW) {//左上　 KEY_ESC) KEY_DOWN_ARROW KEY_RETURN
-  Keyboard.write(KEY_RETURN); 
+    if (digitalRead(7) == LOW) {//下左　 KEY_ESC) KEY_DOWN_ARROW KEY_RETURN
+  Keyboard.write(KEY_DOWN_ARROW); 
   delay(de);
   }
   }
@@ -163,7 +163,7 @@ void loop() {
   long int a2 = analogRead(A2pin);
   time = millis();
 
-  if (a3 - sv3 >= k && time - ti3 > A && time- ti > B) {
+  if (a3 - sv3 >= rights && time - ti3 > A && time- ti > B) {
   SwitchControlLibrary().pressButton(Button::ZL);
   SwitchControlLibrary().sendReport();
   delay(cc);
@@ -173,7 +173,7 @@ void loop() {
   ti3 = millis();
   ti = millis();
   }
-    if (a0 - sv0 >= d && time - ti0 > A && time- ti > B) {
+    if (a0 - sv0 >= lefts && time - ti0 > A && time- ti > B) {
   SwitchControlLibrary().pressButton(Button::ZR);
   SwitchControlLibrary().sendReport(); 
   delay(cc);
@@ -183,7 +183,7 @@ void loop() {
   ti0 = millis();
   ti = millis();
   }
-    if (a1 - sv1 >= f && time - ti1 > A && time- ti > B) { 
+    if (a1 - sv1 >= middleleft && time - ti1 > A && time- ti > B) { 
   SwitchControlLibrary().pressButton(Button::RCLICK);
   SwitchControlLibrary().sendReport();
   delay(cc);
@@ -194,7 +194,7 @@ void loop() {
   ti1 = millis();
   ti = millis();
   }
-    if (a2 - sv2 >= j && time - ti2 > A && time- ti > B) {
+    if (a2 - sv2 >= middlerights && time - ti2 > A && time- ti > B) {
   SwitchControlLibrary().pressButton(Button::LCLICK);
   SwitchControlLibrary().sendReport();
   delay(cc);
