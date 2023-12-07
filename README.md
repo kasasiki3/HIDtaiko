@@ -14,6 +14,10 @@ https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 ![rear.png](images/images/rear.png)
 ![e.png](images/images/e.png)
 
+# スケッチの補足
+HIDtaiko_connector_ver1.2 {pcbを使った本格的な接続器}
+sketch_developmentSW      {sw用のスケッチ}
+sketch_hidtaiko           {pc用のスケッチ}
 
 # BOM
 | 部品 | 数量 | 品番 |
