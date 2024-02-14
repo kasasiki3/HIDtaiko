@@ -85,7 +85,7 @@
       (mirror false)
       (drillshape 0)
       (scaleselection 1)
-      (outputdirectory "../../../../../Desktop/hid taiko v1.2new/")
+      (outputdirectory "../../../../../Downloads/pcbpcb/")
     )
   )
 
@@ -950,6 +950,9 @@
   (gr_text "1MΩ" (at 121 66) (layer "F.SilkS") (tstamp 5a47d5d1-0308-4cf0-8a07-d8c4bf6987b8)
     (effects (font (size 2 2) (thickness 0.2)) (justify left bottom))
   )
+  (gr_text "－" (at 151.4 66.1) (layer "F.SilkS") (tstamp 5cb07001-b48b-4edd-a5ee-663d12ba61e9)
+    (effects (font (size 1.5 1.5) (thickness 0.3) bold) (justify left bottom))
+  )
   (gr_text "ver.1.2" (at 158 109.5) (layer "F.SilkS") (tstamp 62314591-ba10-42a6-aa4e-fe2ed24bd747)
     (effects (font (face "ＭＳ Ｐ明朝") (size 4 4) (thickness 1) bold) (justify left bottom))
     (render_cache "ver.1.2" 0
@@ -1211,6 +1214,9 @@
         )
       )
     )
+  )
+  (gr_text "＋" (at 151.4 63.5) (layer "F.SilkS") (tstamp 74e64016-f168-4eda-8a19-c0db34526d69)
+    (effects (font (size 1.5 1.5) (thickness 0.3) bold) (justify left bottom))
   )
   (gr_text "PC-SW" (at 105.5 108.5) (layer "F.SilkS") (tstamp aa990f93-e4a6-48e4-a61a-f63266b3922a)
     (effects (font (face "游ゴシック") (size 1.5 1.5) (thickness 0.3) bold) (justify left bottom))
