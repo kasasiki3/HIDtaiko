@@ -67,6 +67,10 @@ long int ti3 =  0;
 long int ti0 =  0;
 long int time =  0;
 long int ti = 0;
+int daruv1 = 0;
+int daruv2 = 0;
+int douziosi2 = 0;
+int douziosi = 0;
 bool swswitching = false;
 void setup() {
   Serial.begin(9600);
@@ -114,15 +118,20 @@ void loop() {
     if (a1 - sv1 >= middlelefts && time - ti1 > A && time- ti > B) { 
   Keyboard.write(middletight);
   daru1 = true;
+  daruv1 = true;
   ti1 = millis();
   ti = millis();
   }
     if (a2 - sv2 >= middlerights && time - ti2 > A && time- ti > B) {
   Keyboard.write(middleleft);
   daru2 = true;
+  daruv2 = true;
   ti2 = millis();
   ti = millis();
   }
+
+  
+  //下がって下がって上がったら入力するギミック
   if(sv32 - sv3 > sagarichi && a3 - sv3 > agari && time - ti3 > K && time - tia >K2 && daru3 == false){
     ti3 = millis();
     tia = millis();
@@ -144,6 +153,36 @@ void loop() {
         tia = millis();
   Keyboard.write(right);
     }
+
+   /* 
+  //下がって下がって上がったら入力するギミック
+    //13ms以内なら同時押しできるギミック
+    if (daruv2 == true){
+       douziosi2 = millis();
+      }
+    if (daruv1 == true){
+       douziosi = millis();
+      }
+
+      if(time - douziosi2 < 13 && a1 - sv1 > 45){
+        Keyboard.write(middletight);
+        }
+
+      if(time - douziosi < 13 && a2 - sv2 > 45){
+        Keyboard.write(middleleft);
+        }
+      //13ms以内なら同時押しできるギミック
+      if(time - douziosi2 < 13 && a2 - sv2 > 45){
+        Keyboard.write(middleleft);
+        }
+
+      if(time - douziosi < 13 && a1 - sv1 > 45){
+        Keyboard.write(middletight);
+        }
+
+*/
+      
+
   sv3 = a3;
   sv32 = sv3;
   
