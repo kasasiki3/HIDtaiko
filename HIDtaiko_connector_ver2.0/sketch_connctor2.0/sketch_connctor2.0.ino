@@ -1,3 +1,5 @@
+#include <Keyboard.h>
+#include <SwitchControlLibrary.h>
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
@@ -14,54 +16,101 @@ char key0 = 6;//左から順に
 char key1 = 4;
 char key2 = 7;
 char key3 = 5;
+char swpc = 9;
 int keyl = 8;//レイヤー用
 char ct = 110;//ディスプレイ操作のdelay
 
-
 bool layer = false;  // 現在のフラグ状態  keyL
 bool lastkeyl = HIGH;  // 前回のスイッチの状態
-
-
 bool key0f = false;  // 前回のスイッチの状態 key0
 bool lastkey0 = HIGH;  // 前回のスイッチの状態
-
-
 bool key1f = false;  // 前回のスイッチの状態 key1
 bool lastkey1 = HIGH;  // 前回のスイッチの状態
-
-
 bool key2f = false;  // 前回のスイッチの状態 key2
 bool lastkey2 = HIGH;  // 前回のスイッチの状態
-
-
 bool key3f = false;  // 前回のスイッチの状態 key3
 bool lastkey3 = HIGH;  // 前回のスイッチの状態
-
-
 Adafruit_SSD1306 display(-1);
 int se0 = 0;
 int se1 = 0;
 int se2 = 0;
 int se3 = 0;
+int A1pin = A1;
+int A2pin = A2;
+int A0pin = A0; 
+int A3pin = A3; 
+char left = 'd';        //左カッ
+char middleleft = 'f';  //左ドン
+char middletight = 'j'; //右ドン
+char right = 'k';       //右カッ
+//SW(調節はお勧めしません)
+char aa = 17; //入力のdelay
+char cc = 20;
+char swA = 1;
+char swB = 3;
+/*(PC)Aはどれかのキーが入力されてから、そのキーの次の入力を受け付けない時間です。
+(PC)Bはどれかのキーが入力されてから、4キーすべての入力を受け付けない時間です。
+*/
+char A = 1; //キー単体のdelay
+char B = 10; //キー全体のdelay
+char C = 35;
 
+char de = 200;
+long int sv1 =  0;
+long int sv2 =  0;
+long int sv3 =  0;
+long int sv0 =  0;
+long int ti1 =  0;
+long int ti2 =  0;
+long int ti3 =  0;
+long int ti0 =  0;
+long int time =  0;
+long int ti = 0;
+bool swswitching = false;
 void setup() {
   pinMode(A_pin, INPUT_PULLUP);//ロータリーエンコーダの設定
   pinMode(B_pin, INPUT_PULLUP);
   attachInterrupt(digitalPinToInterrupt(A_pin), pulse_counter, CHANGE);
 
-
+  Keyboard.begin();
   display.begin(SSD1306_SWITCHCAPVCC, 0x3C);
   display.clearDisplay();
   display.display();
+  pinMode(swpc, INPUT_PULLUP);
   pinMode(keyl, INPUT_PULLUP);
   pinMode(key0, INPUT_PULLUP);
+  pinMode(key1, INPUT_PULLUP);
+  pinMode(key2, INPUT_PULLUP);
+  pinMode(key3, INPUT_PULLUP);
  Serial.begin(9600);
-
-
-  se0 = EEPROM.read(0);
+ se0 = EEPROM.read(0);
     se1 = EEPROM.read(1);
       se2 = EEPROM.read(2);
         se3 = EEPROM.read(3);
+  if (digitalRead(9) == LOW) {
+  swswitching = true;
+  delay(100); 
+  }
+  if(swswitching == true){
+  SwitchControlLibrary().pressButton(Button::LCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(400);
+  SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().pressButton(Button::LCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(400);
+  SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().pressButton(Button::LCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(400);
+  SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+  }
 }
 
 
@@ -70,15 +119,132 @@ void setup() {
 
 
 void loop() {
+  delay(1);//このdelayがないとswitchが反応しねぇ
+  long int a3 = analogRead(A3pin);
+  long int a0 = analogRead(A0pin); 
+  long int a1 = analogRead(A1pin);
+  long int a2 = analogRead(A2pin);
+  time = millis();
+    if (a3 - sv3 >= se3 && time - ti3 > A && time- ti > C) {
+  Keyboard.write(right);
+  ti3 = millis();
+  ti = millis();
+  }
+    if (a0 - sv0 >= se0 && time - ti0 > A && time- ti > C) {
+  Keyboard.write(left);
+  ti0 = millis();
+  ti = millis();
+  }
+ if (a1 - sv1 >= se1 && time - ti1 > A && time- ti > B) { 
+  Keyboard.write(middleleft);
+  ti1 = millis();
+  ti = millis();
+  }
+    if (a2 - sv2 >= se2 && time - ti2 > A && time- ti > B) {
+  Keyboard.write(middletight);
+  ti2 = millis();
+  ti = millis();
+  }
+  sv3 = a3;
+  sv0 = a0;
+  sv1 = a1;
+  sv2 = a2;
+
+   if(swswitching == true){
+  long int a3 = analogRead(A3pin);
+  long int a0 = analogRead(A0pin); 
+  long int a1 = analogRead(A1pin);
+  long int a2 = analogRead(A2pin);
+  time = millis();
+
+  if (a3 - sv3 >= se3 && time - ti3 > swA && time- ti > swB) {
+  SwitchControlLibrary().pressButton(Button::ZL);
+  SwitchControlLibrary().sendReport();
+  delay(cc);
+  SwitchControlLibrary().releaseButton(Button::ZL); 
+  SwitchControlLibrary().sendReport(); 
+  delay(aa);
+  ti3 = millis();
+  ti = millis();
+  }
+    if (a0 - sv0 >= se0 && time - ti0 > swA && time- ti > swB) {
+  SwitchControlLibrary().pressButton(Button::ZR);
+  SwitchControlLibrary().sendReport(); 
+  delay(cc);
+  SwitchControlLibrary().releaseButton(Button::ZR); 
+  SwitchControlLibrary().sendReport(); 
+  delay(aa);
+  ti0 = millis();
+  ti = millis();
+  }
+    if (a1 - sv1 >= se1 && time - ti1 > swA && time- ti > swB) { 
+  SwitchControlLibrary().pressButton(Button::RCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(cc);
+  SwitchControlLibrary().releaseButton(Button::RCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(aa);
+
+  ti1 = millis();
+  ti = millis();
+  }
+    if (a2 - sv2 >= se2 && time - ti2 > swA && time- ti > swB) {
+  SwitchControlLibrary().pressButton(Button::LCLICK);
+  SwitchControlLibrary().sendReport();
+  delay(cc);
+  SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(aa);
+  ti2 = millis();
+  ti = millis();
+  }
+  sv3 = a3;
+  sv0 = a0;
+  sv1 = a1;
+  sv2 = a2;
+    if (digitalRead(2) == LOW) {//上左　 KEY_ESC) KEY_DOWN_ARROW KEY_RETURN
+  SwitchControlLibrary().pressButton(Button::R);
+  SwitchControlLibrary().sendReport();
+  delay(de);
+  SwitchControlLibrary().releaseButton(Button::R); 
+  SwitchControlLibrary().sendReport(); 
+  delay(de);
+  }
+  if (digitalRead(3) == LOW) {//上中　 KEY_ESC) KEY_DOWN_ARROW KEY_RETURN
+  SwitchControlLibrary().pressButton(Button::PLUS);
+  SwitchControlLibrary().sendReport();
+  delay(de);
+  SwitchControlLibrary().releaseButton(Button::PLUS); 
+  SwitchControlLibrary().sendReport(); 
+  delay(de);
+  }
+
+  if (digitalRead(4) == LOW) { //上右
+  SwitchControlLibrary().pressButton(Button::A);
+  SwitchControlLibrary().sendReport();
+  delay(de);
+  SwitchControlLibrary().releaseButton(Button::A); 
+  SwitchControlLibrary().sendReport(); 
+  delay(de);
+  }
+
+
+  if (digitalRead(5) == LOW) { //下右
+  SwitchControlLibrary().pressButton(Button::B);
+  SwitchControlLibrary().sendReport();
+  delay(de);
+  SwitchControlLibrary().releaseButton(Button::B); 
+  SwitchControlLibrary().sendReport(); 
+  delay(de);
+  }
+  }
 
   lastcount = count;
  // count = 0;
   //Serial.println(digitalRead(keyl));
-delay(2);//このdelayがないとswitchが反応しねぇ
+
     if (digitalRead(keyl) == LOW && lastkeyl == HIGH) {//レイヤーの切り替え
-    layer = !layer;
-    if(layer == true){
-     
+    layer = true;
     display.setTextSize(1);
     display.setTextColor(WHITE);
     display.setCursor(0, 0);
@@ -86,20 +252,21 @@ delay(2);//このdelayがないとswitchが反応しねぇ
       display.println(F("edit mode"));
       display.display();
     }
-    else if(layer == false){
-    display.clearDisplay();
-         display.display();
-          EEPROM.write (0,se0);
-              EEPROM.write (1,se1);
-                  EEPROM.write (2,se2);
-                      EEPROM.write (3,se3);
-    }
 
-delay(ct);
-  }
+  
 //ここまでがレイヤーの切り替えdkkkkjkfkfffkfjffffjjjjjjjjjdddddddddddkff
 
-if(layer == true){
+while(layer == true){
+  delay(5);
+   if (digitalRead(keyl) == LOW &&lastkeyl == HIGH) {
+        display.clearDisplay();
+         display.display();
+         EEPROM.write (0,se0);
+          EEPROM.write (1,se1);
+          EEPROM.write (2,se2);
+          EEPROM.write (3,se3);
+          layer = false;
+   }
       if (digitalRead(key0) == LOW && lastkey0 == HIGH ) {//key0が押されたら
     key0f = true;
     key1f = false;
@@ -201,8 +368,6 @@ else if(key1f == true){
  lastkey1 = digitalRead(key1);
  lastkey2 = digitalRead(key2);
  lastkey3 = digitalRead(key3);
-
-
  lastkeyl = digitalRead(keyl);//レイヤー
 
 }
