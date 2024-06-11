@@ -20,9 +20,13 @@ char key2 = 7;
 char key3 = 5;
 char swpc = 9;
 int keyl = 8;//レイヤー用
-char ct = 110;//ディスプレイ操作のdelay
+char ct = 10;//ディスプレイ操作のdelay
+char ctt= 20;
 
-
+int valuec = 0; 
+bool delayc = false;
+bool delayall = false;
+bool delayallc = false;
 bool layer = false;  // 現在のフラグ状態  keyL
 bool lastkeyl = HIGH;  // 前回のスイッチの状態
 bool key0f = false;  // 前回のスイッチの状態 key0
@@ -51,12 +55,12 @@ char aa = 17; //入力のdelay
 char cc = 20;
 char swA = 1;
 char swB = 3;
-/*(PC)Aはどれかのキーが入力されてから、そのキーの次の入力を受け付けない時間です。
+/*(PC)Aはどれかのキーが入力されてから、そのキーの次の入力を受け付けない時dk間です。
 (PC)Bはどれかのキーが入力されてから、4キーすべての入力を受け付けない時間です。
 */
 char A = 1; //キー単体のdelay
-char B = 10; //キー全体のdelay
-char C = 30;
+char B = 12; //キー全体のdelay
+char C = 32;
 char p1 = 35;//かっが入力された後のドンのディレイ
 
 
@@ -93,12 +97,14 @@ void setup() {
     se1 = EEPROM.read(1);
       se2 = EEPROM.read(2);
         se3 = EEPROM.read(3);
+        B = EEPROM.read(4);
+        C = EEPROM.read(5);
+        p1 = EEPROM.read(6);
   if (digitalRead(9) == LOW) {
   swswitching = true;
   delay(100);
   }
-  if(swswitching == true){
-  SwitchControlLibrary().pressButton(Button::LCLICK);
+  if(swswitching == false){
   SwitchControlLibrary().sendReport();
   delay(400);
   SwitchControlLibrary().releaseButton(Button::LCLICK);
@@ -131,7 +137,7 @@ void setup() {
 
 
 void loop() {
- if(swswitching == false){
+ if(swswitching == true){
   long int a3 = analogRead(A3pin);
   long int a0 = analogRead(A0pin);
   long int a1 = analogRead(A1pin);
@@ -161,6 +167,7 @@ void loop() {
   sv0 = a0;
   sv1 = a1;
   sv2 = a2;
+  /*
       if (digitalRead(key0) == LOW && lastkey0 == HIGH && layer == false) {//下中
   Keyboard.write(KEY_ESC); 
  delay(de);
@@ -177,10 +184,11 @@ void loop() {
   Keyboard.write(KEY_F1); 
  delay(de);
   }
+  */
  }
 
 
-   if(swswitching == true){
+   if(swswitching == false){
   long int a3 = analogRead(A3pin);
   long int a0 = analogRead(A0pin);
   long int a1 = analogRead(A1pin);
@@ -271,9 +279,10 @@ void loop() {
   }
 
 
-  lastcount = count;
- // count = 0;
-  //Serial.println(digitalRead(keyl));
+//カウント変数を用意して、その数に応じて数値を変更するパーツを切り替える
+//チャタは許されない
+//変数の範囲を0から６に
+
 
 
     if (digitalRead(keyl) == LOW && lastkeyl == HIGH && layer == false) {//レイヤーの切り替え
@@ -290,10 +299,14 @@ void loop() {
       layer = false;
     display.clearDisplay();
          display.display();
-          EEPROM.write (0,se0);
-              EEPROM.write (1,se1);
-                  EEPROM.write (2,se2);
-                      EEPROM.write (3,se3);
+      EEPROM.write (0,se0);
+      EEPROM.write (1,se1);
+      EEPROM.write (2,se2);
+      EEPROM.write (3,se3);
+      EEPROM.write (3,se3);
+      EEPROM.write (4,B);
+      EEPROM.write (5,C);
+      EEPROM.write (6,p1);
     }
 
 
@@ -302,7 +315,7 @@ void loop() {
 
 
 if(layer == true){
-  delay(5);
+
    if (digitalRead(keyl) == LOW &&lastkeyl == HIGH) {
         display.clearDisplay();
          display.display();
@@ -310,27 +323,53 @@ if(layer == true){
           EEPROM.write (1,se1);
           EEPROM.write (2,se2);
           EEPROM.write (3,se3);
+          EEPROM.write (4,B);
+          EEPROM.write (5,C);
+          EEPROM.write (6,p1);
           layer = false;
           Serial.println("nannde?");
    }
-      if (digitalRead(key0) == LOW && lastkey0 == HIGH ) {//key0が押されたら
+          if (digitalRead(key0) == LOW && lastkey0 == HIGH){
+    valuec++;
+   // Serial.println("dasd");
+    delay(5);
+  }
+  if (digitalRead(key1) == LOW && lastkey1 == HIGH){
+    valuec--;
+  //  Serial.println("dasd");
+        delay(5);
+  }
+  if(valuec > 6){ //変数の値を0～６に制限する。
+  valuec = 6;
+}
+else if(valuec < 0){
+ valuec = 0;
+}
+Serial.println(valuec);
+
+      if (valuec == 0 && key0f == false) {
+      delay(ctt);
+          delayall = false;
+    delayallc = false;
+    delayc = false;
     key0f = true;
     key1f = false;
     key2f = false;
     key3f = false;
-    //他のキー情報を格納するフラッグをすべてfalseにする
-
-
-      count = se0;
+count = se0;
       clearArea2(5,10,30,40);
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(5 ,10);
     display.println("0");
-  //    display.display();
-      delay(ct);
+      display.display();
+  //    delay(ct);
       }
-          if (digitalRead(key1) == LOW && lastkey1 == HIGH) {//key1の切り替え
+          if (valuec == 1 && key1f == false) {
+          delay(ctt);
+              delayall = false;
+    delayallc = false;
+    delayc = false;
     key1f = true;
     key0f = false;
     key2f = false;
@@ -341,39 +380,97 @@ if(layer == true){
     display.setTextColor(WHITE);
     display.setCursor(5 ,10);
     display.println("1");
-//      display.display();
-      delay(ct);
+      display.display();
+   //   delay(ct);
           }
-          if (digitalRead(key2) == LOW && lastkey2 == HIGH) {//key0の切り替え
+          if (valuec == 2 && key2f == false) {
+          delay(ctt);
+              delayall = false;
+    delayallc = false;
+    delayc = false;
     key2f = true;
     key1f = false;
     key0f = false;
     key3f = false;
-    //他のキー情報を格納するフラッグをすべてfalseにする
 count = se2;
     clearArea2(5,10,30,40);
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(5 ,10);
     display.println("2");
-  //    display.display();
-      delay(ct);
+      display.display();
+   //   delay(ct);
           }
-          if (digitalRead(key3) == LOW && lastkey3 == HIGH) {//key0の切り替え
+          if (valuec == 3 && key3f == false) {
+          delay(ctt);
+    delayall = false;
+    delayallc = false;
+    delayc = false;
     key3f = true;
     key1f = false;
     key2f = false;
     key0f = false;
-    //他のキー情報を格納するフラッグをすべてfalseにする
       count = se3;
     clearArea2(5,10,30,40);
     display.setTextSize(2);
     display.setTextColor(WHITE);
     display.setCursor(5 ,10);
     display.println("3");
-  //    display.display();
-  delay(ct);
-          }
+      display.display();
+ // delay(ct);
+  }
+  //こっからdelay系になる
+  if(valuec == 4 && delayall == false){//Bのdelay
+    delayall = true;
+    delayallc = false;
+    delayc = false;
+    key1f = false;
+    key2f = false;
+    key0f = false;
+    key3f = false;
+    count = B;//全体delayの数値
+    clearArea2(5,10,30,40);
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(5 ,10);
+    display.println("4");
+    display.display();
+ // delay(ct);
+  }
+    if(valuec == 5 && delayallc == false){//Bのdelay
+    delayall = false;
+    delayallc = true;
+    delayc = false;
+    key1f = false;
+    key2f = false;
+    key0f = false;
+    key3f = false;
+    count = C;//全体delayの数値
+    clearArea2(5,10,30,40);
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(5 ,10);
+    display.println("5");
+    display.display();
+  //delay(ct);
+  }
+      if(valuec == 6 && delayc == false){//p1のdelay
+    delayall = false;
+    delayallc = false;
+    delayc = true;
+    key1f = false;
+    key2f = false;
+    key0f = false;
+    key3f = false;
+    count = p1;//
+    clearArea2(5,10,30,40);
+    display.setTextSize(2);
+    display.setTextColor(WHITE);
+    display.setCursor(5 ,10);
+    display.println("6");
+    display.display();
+  //delay(ct);
+  }
    
    
    
@@ -387,34 +484,32 @@ if(key0f == true){
 }
 else if(key2f == true){
   se2 = count;
-
-
 }
 else if(key3f == true){
   se3 = count;
-
-
 }
 else if(key1f == true){
   se1 = count;
-
-
+}
+else if(delayallc == true){
+  C = count;
+}
+else if(delayall == true){
+  B = count;
+}
+else if(delayc == true){
+  p1 = count;
 }
     clearArea(74, 11, 55, 23);
     display.setTextSize(3);
     display.setTextColor(WHITE);
     display.setCursor(74 ,11);//(x.y)
     display.println(count);
-     display.display();
-
-
-
-
-
-
+    display.display();
+   // delay(50);
   }
 //display.clearDisplay();
- Serial.println(digitalRead(key3));
+ //Serial.println(digitalRead(key3));
 //Serial.println(layer);
 //Serial.println("a");
 
@@ -426,7 +521,9 @@ else if(key1f == true){
  lastkey2 = digitalRead(key2);
  lastkey3 = digitalRead(key3);
  lastkeyl = digitalRead(keyl);//レイヤー
- lastkeyl = digitalRead(keyl);//レイヤー
+ //lastkeyl = digitalRead(keyl);//レイヤー
+ Serial.println(count); 
+  lastcount = count;
 }
          
 void pulse_counter() {
@@ -436,14 +533,7 @@ void pulse_counter() {
   } else {
     count--;
   }
-
-
-
-
-}
-
-
-
+  }
 
 void clearArea(int16_t x, int16_t y, int16_t w, int16_t h) {//塗りつぶし
     display.fillRect(x, y, w, h, SSD1306_BLACK);
