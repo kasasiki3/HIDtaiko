@@ -1,6 +1,4 @@
 
-
-#include <Keyboard.h>
 int de = 220;
 const int A1pin = A1;
 const int A2pin = A2;
@@ -34,7 +32,6 @@ long int ti = 0;
 bool swswitching = false;
 void setup() {
   Serial.begin(9600);
-  Keyboard.begin();
   pinMode(15, INPUT_PULLUP);
   pinMode(2, INPUT_PULLUP);
   pinMode(3, INPUT_PULLUP);
@@ -57,13 +54,13 @@ void loop() {
   
   Serial.print(a0);
   Serial.print(",");
-  Serial.print(a3);
-  Serial.print(",");
-  Serial.print(a2);
+  Serial.print(a3);//
   Serial.print(",");
   Serial.print(a1);
-  Serial.println("");
-
+  Serial.print(",");
+  Serial.print(a2);
+  Serial.println(",");
+//delay(10);
 
   
 
