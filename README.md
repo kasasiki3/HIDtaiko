@@ -2,12 +2,8 @@
 ## 低コストで高性能なおうち太鼓を作ることを目標としています。
 #### 様々な機能を追加でき、改造もしやすく、安価で入手しやすい部品で作れるようになっているのがHIDtaikoの特徴です。
 
-### お問合せ
-https://twitter.com/kasashiki
-### ビルドガイド
-https://zenn.dev/kasashiki/articles/7bf286b8120f90
-### youtube
-https://www.youtube.com/watch?v=Z8ZBOPpMMD8
+### yotube 記事 X
+https://lit.link/kasashiki
 
 ![front.png.png](images/images/front.png)
 ![legs.png](images/images/legs.png)
@@ -15,10 +11,7 @@ https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 ![e.png](images/images/e.png)
 
 # 各スケッチの補足
-#### HIDtaiko_connector_ver1.2 {pcbを使った本格的な接続器}
-#### sketch_developmentSW      {sw用のスケッチ}
-#### sketch_hidtaiko           {pc用のスケッチ}
-
+［pc版の接続機の最小構成］(sketch_hidtaiko/sketch_hidtaiko.ino)
 
 # BOM(nomal)
 | 部品 | 数量 | 品番,リンク |
