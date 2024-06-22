@@ -2,7 +2,7 @@
 ## 低コストで高性能なおうち太鼓を作ることを目標としています。
 #### 様々な機能を追加でき、改造もしやすく、安価で入手しやすい部品で作れるようになっているのがHIDtaikoの特徴です。
 
-### yotube 記事 X
+### youtube，zenn，X
 https://lit.link/kasashiki
 
 ![front.png.png](images/images/front.png)
