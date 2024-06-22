@@ -5,7 +5,7 @@
 ### youtube，zenn，X
 https://lit.link/kasashiki
 
-# 各スケッチの補足
+# スケッチ(プログラム)
 #### [pc版接続機の最小構成](sketch_hidtaiko/sketch_hidtaiko.ino)
 #### [switch版接続機の最小構成](sketch_developmentSW/sketch_developmentSW.ino)
 #### [1.2接続機](HIDtaiko_connector_ver1.2)
