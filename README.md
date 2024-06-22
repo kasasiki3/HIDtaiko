@@ -44,8 +44,11 @@ https://lit.link/kasashiki
 |kailh lowprofile Keycap|6|
 
 # BOM (最小構成)
-
-
+|部品|数量|品番,リンク|
+|----|---|----|
+|マイコン|1|pro micro|
+|抵抗|4|1MΩ抵抗|
+|基板(配線を楽にするため)|1|ユニバーサル基板|
 
 
 
