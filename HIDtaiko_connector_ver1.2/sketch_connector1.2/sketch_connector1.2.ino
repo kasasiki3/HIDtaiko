@@ -23,12 +23,11 @@ const int A2pin = A2;
 const int A0pin = A0; 
 const int A3pin = A3; 
 
-
 //(PC)それぞれの数値を変更することで感度を調節ができます。　例 int lefts = 75; 
-int lefts = 50;           //左カッ　
-int middlelefts = 55;     //左ドン  
-int middlerights = 55;    //右ドン　
-int rights = 65;          //右カッ　
+int se0 = 40;//左カッ　
+int se1 = 33;//右ドン
+int se2 = 40;//左ドン　
+int se3 = 40;//右カッ　     
 
 //(PC)叩いた時に入力されるキーを変更できます。例 left = 'y';
 char left = 'd';        //左カッ
@@ -39,9 +38,10 @@ char right = 'k';       //右カッ
 /*(PC)Aはどれかのキーが入力されてから、そのキーの次の入力を受け付けない時間です。
 (PC)Bはどれかのキーが入力されてから、4キーすべての入力を受け付けない時間です。
 */
-char A = 2; //キー単体のdelay
-char B = 19; //キー全体のdelay
-char C = 26;
+char A = 16; 
+char B = 10; //何かkeyが押されてからドンの入力を受け付けない時間(ミリ秒)
+char C = 30;//何かkeyが押されてからカッの入力を受け付けない時間(ミリ秒)
+char p1 = 26;//カッが入力されてからドンの入力を受け付けない時間(ミリ秒)
 
 //SW(調節はお勧めしません)
 char aa = 17; //入力のdelay
@@ -59,6 +59,7 @@ long int ti2 =  0;
 long int ti3 =  0;
 long int ti0 =  0;
 long int time =  0;
+long int timec =  0;
 long int ti = 0;
 bool swswitching = false;
 void setup() {
@@ -95,6 +96,21 @@ void setup() {
   SwitchControlLibrary().releaseButton(Button::LCLICK); 
   SwitchControlLibrary().sendReport(); 
   delay(400);
+    SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
+    SwitchControlLibrary().releaseButton(Button::LCLICK); 
+  SwitchControlLibrary().sendReport(); 
+  delay(400);
   }
 }
 
@@ -107,22 +123,22 @@ void loop() {
   long int a2 = analogRead(A2pin);
   time = millis();
 
-  if (a3 - sv3 >= rights && time - ti3 > A && time- ti > C) {
+  if (a3 - sv3 >= se3 && time - ti3 > A && time- ti > C) {
   Keyboard.write(left);
   ti3 = millis();
   ti = millis();
   }
-    if (a0 - sv0 >= lefts && time - ti0 > A && time- ti > C) {
+    if (a0 - sv0 >= se0 && time - ti0 > A && time- ti > C) {
   Keyboard.write(right);
   ti0 = millis();
   ti = millis();
   }
-    if (a1 - sv1 >= middlelefts && time - ti1 > A && time- ti > B) { 
+    if (a1 - sv1 >= se1 && time - ti1 > A && time- ti > B && time - ti0 > p1 && time - ti3 > p1) { 
   Keyboard.write(middletight);
   ti1 = millis();
   ti = millis();
   }
-    if (a2 - sv2 >= middlerights && time - ti2 > A && time- ti > B) {
+    if (a2 - sv2 >= se2 && time - ti2 > A && time- ti > B && time - ti0 > p1 && time - ti3 > p1) {
   Keyboard.write(middleleft);
   ti2 = millis();
   ti = millis();
@@ -166,7 +182,7 @@ void loop() {
   long int a2 = analogRead(A2pin);
   time = millis();
 
-  if (a3 - sv3 >= lefts && time - ti3 > swA && time- ti > swB) {
+  if (a3 - sv3 >= se3 && time - ti3 > swA && time- ti > swB) {
   SwitchControlLibrary().pressButton(Button::ZL);
   SwitchControlLibrary().sendReport();
   delay(cc);
@@ -176,7 +192,7 @@ void loop() {
   ti3 = millis();
   ti = millis();
   }
-    if (a0 - sv0 >= rights && time - ti0 > swA && time- ti > swB) {
+    if (a0 - sv0 >= se0 && time - ti0 > swA && time- ti > swB) {
   SwitchControlLibrary().pressButton(Button::ZR);
   SwitchControlLibrary().sendReport(); 
   delay(cc);
@@ -186,7 +202,7 @@ void loop() {
   ti0 = millis();
   ti = millis();
   }
-    if (a1 - sv1 >= middlerights && time - ti1 > swA && time- ti > swB) { 
+    if (a1 - sv1 >= se1 && time - ti1 > swA && time- ti > swB) { 
   SwitchControlLibrary().pressButton(Button::RCLICK);
   SwitchControlLibrary().sendReport();
   delay(cc);
@@ -197,7 +213,7 @@ void loop() {
   ti1 = millis();
   ti = millis();
   }
-    if (a2 - sv2 >= middlelefts && time - ti2 > swA && time- ti > swB) {
+    if (a2 - sv2 >= se2 && time - ti2 > swA && time- ti > swB) {
   SwitchControlLibrary().pressButton(Button::LCLICK);
   SwitchControlLibrary().sendReport();
   delay(cc);

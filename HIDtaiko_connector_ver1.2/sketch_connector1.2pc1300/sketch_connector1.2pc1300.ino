@@ -13,9 +13,6 @@
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-/*
-このプログラムはβ版です。今使用しているプログラムを別で保存してから使用してください。
-*/
 
 #include <Keyboard.h>
 int de = 220;
@@ -25,10 +22,10 @@ const int A0pin = A1;
 const int A3pin = A3; 
 
 //(PC)それぞれの数値を変更することで感度を調k節ができます。　例 int lefts = 75; 
-int se0 = 35;//左カッ　
-int se1 = 45;//右ドン
-int se2 = 45;//左ドン　
-int se3 = 35;//右カッ　     
+int se0 = 40;//左カッ　
+int se1 = 25;//右ドン
+int se2 = 25;//左ドン　
+int se3 = 40;//右カッ　     
 
 //int se0 = 160;//左カッ　
 //int se1 = 220;//左ドン  
@@ -46,8 +43,8 @@ char right = 'j';       //右カッ
 */
 char A = 2; 
 char B = 8; //何かkeyが押されてからドンの入力を受け付けない時間(ミリ秒)
-char C = 17;//何かkeyが押されてからカッの入力を受け付けない時間(ミリ秒)
-char p1 = 20;//カッが入力されてからドンの入力を受け付けない時間(ミリ秒)
+char C = 30;//何かkeyが押されてからカッの入力を受け付けない時間(ミリ秒)
+char p1 = 23;//カッが入力されてからドンの入力を受け付けない時間(ミリ秒)
 
 long int sv1 =  0;
 long int sv2 =  0;
@@ -81,7 +78,6 @@ void setup() {
 
 void loop() {
 
-Serial.println("a");
   if(swswitching == false){
   long int a3 = analogRead(A3pin);
   long int a0 = analogRead(A0pin); 
