@@ -1,41 +1,35 @@
 # HIDtaiko Ver.1.2
 ## 低コストで高性能なおうち太鼓を作ることを目標としています。
-#### 様々な機能を追加でき、改造もしやすく、安価で入手しやすい部品で作れるようになっているのがHIDtaikoの特徴です。
+ 部品は安価で入手性が良いものを使用しています。
 
-### お問合せ
-https://twitter.com/kasashiki
-### ビルドガイド
-https://zenn.dev/kasashiki/articles/7bf286b8120f90
-### youtube
-https://www.youtube.com/watch?v=Z8ZBOPpMMD8
+### youtube，zenn，X
+https://lit.link/kasashiki
+
+# スケッチ(プログラム)
+#### [pc版接続機の最小構成](sketch_hidtaiko/sketch_hidtaiko.ino)
+#### [switch版接続機の最小構成](sketch_developmentSW/sketch_developmentSW.ino)
+#### [1.2接続機](HIDtaiko_connector_ver1.2)
+#### [2.0接続機](HIDtaiko_connector_ver2.0)
 
 ![front.png.png](images/images/front.png)
 ![legs.png](images/images/legs.png)
 ![rear.png](images/images/rear.png)
 ![e.png](images/images/e.png)
 
-# 各スケッチの補足
-#### HIDtaiko_connector_ver1.2 {pcbを使った本格的な接続器}
-#### sketch_developmentSW      {sw用のスケッチ}
-#### sketch_hidtaiko           {pc用のスケッチ}
-
-
-# BOM(nomal)
+# BOM(基盤)
 | 部品 | 数量 | 品番,リンク |
 | ---- | ---- | ---- |
 | 防振ゴム | 14 |VD2-2015M6|
 | M6ネジ | 14 | M6L16 |
-| M6ナット |14 | https://amzn.to/3tjdoqh |
-| M6ワッシャー | 14 | https://amzn.to/3tk3ghd |
+| M6ナット |14 |適当|
+| M6ワッシャー | 14 |適当|
 |ラワンベニヤ | 12mm | ホームセンター |  
-|pro micro | 1 | https://amzn.to/3PINKD6 |
-|1MΩ | 4 | https://amzn.to/3towuvm |
-|圧電素子| 4 | https://amzn.to/3PJprVA |
-|工作用ケーブル|1 |https://amzn.to/3Msf9Ik|
-|熱収縮チューブ|1 |https://amzn.to/3snJRvB|　
-|隙間スポンジテープ|1 |ダイソーの物がおすすめ|　
+|圧電素子| 4 |LF-W31E17B|
+|工作用ケーブル|8|0.8～1.5m|
+|熱収縮チューブ(任意)|1 |ケーブルに合わせた|　
+|スポンジ(任意)|1 |ダイソーや純正品|
 
-# BOM (ver.1.2接続器)
+# BOM (1.2接続機)
 |部品|数量|品番,リンク|
 |----|---|----|
 |pro micro|1|https://amzn.to/3PINKD6|
@@ -48,6 +42,13 @@ https://www.youtube.com/watch?v=Z8ZBOPpMMD8
 |1MΩ|4|https://amzn.to/3towuvm|
 |Kailh low profile|6|white|
 |kailh lowprofile Keycap|6|
+
+# BOM (最小構成)
+|部品|数量|品番,リンク|
+|----|---|----|
+|マイコン|1|pro micro|
+|抵抗|4|1MΩ抵抗|
+|基板(配線を楽にするため)|1|ユニバーサル基板|
 
 
 
