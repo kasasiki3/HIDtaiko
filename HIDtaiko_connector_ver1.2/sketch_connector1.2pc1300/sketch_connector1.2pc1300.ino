@@ -109,31 +109,23 @@ void loop() {
   sv0 = a0;
   sv1 = a1;
   sv2 = a2;
-    if (digitalRead(2) == LOW) {
-  Keyboard.write(KEY_UP_ARROW);  //上左
-  delay(de);
-  }
 
-  if (digitalRead(3) == LOW) {//上中　 
+  if (digitalRead(6) == LOW) {//上中　 
   Keyboard.write(KEY_RETURN); 
   delay(de);
   }
 
-  if (digitalRead(4) == LOW) { //上右
+  if (digitalRead(9) == LOW) { //上右
   Keyboard.write(KEY_F1); 
   delay(de);
   }
 
-  if (digitalRead(5) == LOW) { //下右
+  if (digitalRead(8) == LOW) { //下右
   Keyboard.write(KEY_INSERT); 
   delay(de);
   }
-    if (digitalRead(6) == LOW) {//下中
+    if (digitalRead(7) == LOW) {//下中
   Keyboard.write(KEY_ESC); 
-  delay(de);
-  }
-    if (digitalRead(7) == LOW) {//下左　 
-  Keyboard.write(KEY_DOWN_ARROW); 
   delay(de);
   }
   }

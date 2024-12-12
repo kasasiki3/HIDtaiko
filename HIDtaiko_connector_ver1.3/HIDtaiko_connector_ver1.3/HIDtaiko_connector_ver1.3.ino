@@ -57,7 +57,7 @@ char A = 16;
 char B = 10; //何かkeyが押されてからドンの入力を受け付けない時間(ミリ秒)
 char C = 30;//何かkeyが押されてからカッの入力を受け付けない時間(ミリ秒)
 char p1 = 26;//カッが入力されてからドンの入力を受け付けない時間(ミリ秒)
-char ha = 20;
+char ha = 0;
 
 //SW(調節はお勧めしません)
 char aa = 17; //入力のdelay
@@ -155,11 +155,9 @@ void setup() {
 }
 
 void loop() {
-
-  
   if (Serial && Serial.available()) {//入力があった時
   int seba = Serial.read();
-  if(seba == 0){
+  if(seba == 240){
       EEPROM.write (0,se0);
       EEPROM.write (1,se1);
       EEPROM.write (2,se2);
@@ -168,12 +166,12 @@ void loop() {
       EEPROM.write (5,B);
       EEPROM.write (6,C);
       EEPROM.write (7,p1);
-      EEPROM.write(8,ha);
+      EEPROM.write (8,ha);
   }
   else{
     color[colorIndex++] = seba;//代入
     if (colorIndex == 9) {
-      se0 = color[0];
+         se0 = color[0];
          se1 = color[1];
          se2 = color[2];
          se3 = color[3];
@@ -182,25 +180,6 @@ void loop() {
          C = color[6];
          p1 = color[7];
          ha = color[8];
-         /*
-      Serial.print(color[0]);
-      Serial.print(", ");
-      Serial.print(color[1]);
-      Serial.print(", ");
-      Serial.print(color[2]);
-      Serial.print(", ");
-      Serial.print(color[3]);
-      Serial.print(", ");
-      Serial.print(color[4]);
-      Serial.print(", ");
-      Serial.print(color[5]);
-      Serial.print(", ");
-      Serial.print(color[6]);
-      Serial.print(", ");
-      Serial.print(color[7]);
-      //Serial.print(".\r\n");
-      Serial.flush();
-      */
     colorIndex = 0;
     }
   }
