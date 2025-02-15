@@ -21,7 +21,7 @@
 |ラワンベニヤ | 12mm | ホームセンターなど |  
 
 #### 図面
-　[A4用紙4を用いた実寸設計図](images\fullsizeprint)
+　[A4用紙4を用いた実寸設計図](images/fullsizeprint)
 
 ##### 上板の寸法
  <img src=images\images\front.png width= "300px" >
@@ -36,28 +36,46 @@
 #### HIDtaikoの接続器は大きく分けて2種類に分かれています。以下に概要を示します。
  #### 1.Arduino IDEを使用するタイプ
 ※改造目的、switchでの使用、arduinoIDEに関する知識がある人におすすめです。
+
 ※ver1.2接続器,ver1.3接続器,ver2.0接続器
+
 ・改造や機能の追加が簡単
+
 ・pc,switchに対応
+
 ・感度変更のたびにスケッチの書き込みが必要
+
 ・制作にはライブラリの導入が必要
+
 ・制作にはarduinoに関する知識が必要
+
 #### 2.rp2040を使用するタイプ
 ※簡単に接続器を作りたい人。とりあえずこっちがおすすめです。
+
 ※HIDtaiko_rp2040
+
 ・Raspberry Pi Pico SDKを使用
+
 ・WEBブラウザで簡単に感度変更が可能
+
 ・制作が簡単
+
 ・小型
+
 ・制作費用800円以下
+
 ・改造が比較的難しい
 
 ## ・性能(参考)
 ##### どちらの接続器も性能は同じくらいです。
 ※一部のシュミレーターでは入力制限を入れないとキー入力が認識されない可能性があります。
+
 ・大体のロール処理は入ります。
+
 ・ロール連打(一振り):13
+
 ・旧ダブル連打(ドキムネ):1100
+
 ## ・Arduino IDEを使用した接続器の詳細
 　ハードウェアはマイコンボードと抵抗を並列につないだ回路です。これにスケッチ(プログラム)を書き込むことで接続器とし動作します。(非常に簡単)
 
@@ -72,6 +90,7 @@
 |ブレットボード,基板|1|[ブレットボード基板](https://www.amazon.co.jp/%E3%82%A4%E3%83%81%E3%82%B1%E3%83%B3-1%E5%88%97%E5%A4%9A%E3%81%84%E3%83%96%E3%83%AC%E3%83%83%E3%83%89%E3%83%9C%E3%83%BC%E3%83%89%E3%83%97%E3%83%AA%E3%83%B3%E3%83%88%E5%9F%BA%E6%9D%BF-%E3%81%AF%E3%82%93%E3%81%A0%E4%BB%98%E3%81%91%E5%8F%AF%E8%83%BD-%E9%87%91%E3%83%A1%E3%83%83%E3%82%AD%E4%BB%95%E4%B8%8A%E3%81%92%E3%81%AE%E4%B8%8A%E7%B4%9A%E5%93%81-%E3%83%8F%E3%83%BC%E3%83%95%E3%82%B5%E3%82%A4%E3%82%BA/dp/B0CMHD34G6?__mk_ja_JP=%E3%82%AB%E3%82%BF%E3%82%AB%E3%83%8A&crid=2AGZU6PXL321E&dib=eyJ2IjoiMSJ9.wVtwTgZhb9ysKD6uEqIX780UJUFfp8svxAUybcynxIoUBe82WqKeXeaE9ECm0sQ2iyRU3kvZMNz523VUIIYMKtbEQgeMZip9m4zydpBzVBPd7-0DbsaNqx_btTvpp_itK6NDSD6aI10dg8qUBkfpGYiGOwiAZ6f3nnFbecyeetcxkvOId8cMcNBY7EcN_TxiOMxpwxxmBzPOeHQaHOAQ5_P9Kf11aYzuOZtBYblSCr2H2DaHxXWa4cVuh3msl3JVEDzF2I1aO2GsNnsqaCd4a6bEXe1A5X_YQnlap24PyBXeWaRx7nIuZdgSTbE754HVYI6sM1xHYdAnBLJ6Zql4dotsuK4Ah6KSsG1sVMU2FgCn6xK9AWMZr5BGYeia5X50GvV-RfWZsZ7xFQO6jn8sZ2X9zYFrIXJJ6jaAgEHZ4qXMeSwW37KOdCW8RfWpcJp5.uz8NXzEyEV7tRfYqtuBsoBLc-NLwDiDgjJn2IQjpa6M&dib_tag=se&keywords=%E3%83%96%E3%83%AC%E3%83%83%E3%83%89%E3%83%9C%E3%83%BC%E3%83%89%E5%9F%BA%E6%9D%BF&qid=1739381379&sprefix=%E3%83%96%E3%83%AC%E3%83%83%E3%83%88%E3%83%9C%E3%83%BC%E3%83%89%E5%9F%BA%E6%9D%BF%2Caps%2C173&sr=8-1)|
 ### ハードウェア(配線)
 以下の画像の様に配線してください。
+
 ※adc入力が4つあり勝つHID機能が使えるマイコンボードでのみ動作します。
 <img src=images\images\wiring.png width= "700px" >
 
@@ -83,6 +102,7 @@
  3.[こちら](arduino_minimum)から用途に応じたスケッチを選択、ArduinoIDEにコピペし、マイコンボードに書き込む
 ### ・switchでの使用
 ※現在メンテナンスをしていないので動作に関して保障できません。
+
 　ArduinoIDEの設定に関しては[こちらの記事](https://zenn.dev/kasashiki/articles/5c34ef0c962846)を参照してください。
 
 ## ・rp2040を使用した接続器の詳細
@@ -101,7 +121,8 @@
 |3Dプリントケース| 1 |[stlファイル](HIDtaiko_connector_rp2040/case)|
 
 ### 接続器の組み立て
-　プリント基板、ブレットボード基板を用いた接続器の組み立て方法は、[こちらの記事](https://zenn.dev/kasashiki/articles/28d31814b8bf86)で詳細に解説しています。プログラムの書き込みもこちらで解説しています。
+　プリント基板、ブレットボード基板を用いた接続器の組み立て方法は、[こちらの記事]
+(https://zenn.dev/kasashiki/articles/28d31814b8bf86)で詳細に解説しています。プログラムの書き込みもこちらで解説しています。
 
 ### WEB感度変更
  GitHub Pagesでデプロイしました。使用方法はページに記載しています。　　
