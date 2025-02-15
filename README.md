@@ -1,20 +1,36 @@
 # HIDtaiko 
-低価格で高性能なおうち太鼓プロジェクト
+##### 低価格で高性能なおうち太鼓プロジェクト
+ <img src=images\images\entrance.png width= "800px" >
+
+
 質問は[XのDM](https://x.com/kasashiki)にお願いします。
 
 ## ・基盤
-　画像の寸法でベニヤ板をカットし、各ねじを用い組み立てます。組み立ての詳細はyoutubeを参照してください。また、販売も行っています。
+
+#### 組み立て
+
+　画像の寸法でベニヤ板をカットし、各ねじを用い組み立てます。組み立ての詳細は[youtube](https://www.youtube.com/watch?v=5O0MgKzX0PY)または[記事(zeen)](https://zenn.dev/kasashiki/articles/7bf286b8120f90)を参照してください。また、販売も行っています。
 #### 部品
+##### ※ラワンベニヤ以外の部品に関してはモノタロウでの購入がおすすめです。
 | 部品 | 数量 | 品番,リンク |
 | ---- | ---- | ---- |
 | 防振ゴム | 14 |VD2-2015M6|
 | M6ネジ | 14 | M6L16 |
 | M6ナット |14 |適当(ネジピッチに注意)|
-| M6ワッシャー | 14 |適当|
-|ラワンベニヤ | 12mm | ホームセンター |  
-|圧電素子| 4 |LF-W31E17B or 純正|
-|工作用ケーブル|8|0.8～1.5m|
-|熱収縮チューブ(任意)|1 |ケーブルに合わせたサイズ|
+| M6ワッシャー | 14 |適当()|
+|ラワンベニヤ | 12mm | ホームセンターなど |  
+
+#### 図面
+　[A4用紙4を用いた実寸設計図](images\fullsizeprint)
+
+##### 上板の寸法
+ <img src=images\images\front.png width= "300px" >
+
+ ##### 下板の寸法
+ <img src=images\images\rear.png width= "300px" >
+
+ ##### 足の寸法
+ <img src=images\images\legs.png width= "300px" >
 
 ## ・接続器
 #### HIDtaikoの接続器は大きく分けて2種類に分かれています。以下に概要を示します。
@@ -44,7 +60,9 @@
 ・旧ダブル連打(ドキムネ):1100
 ## ・Arduino IDEを使用した接続器の詳細
 　ハードウェアはマイコンボードと抵抗を並列につないだ回路です。これにスケッチ(プログラム)を書き込むことで接続器とし動作します。(非常に簡単)
+
  ・1.2接続器,1.3接続器は基板とキースイッチを用い、デザインと生産性を向上させたものです。
+ 
  ・2.0接続器は基板、キースイッチ、ディスプレイ、オペアンプを用い太鼓性能の向上を目指し、ハードウェアでの感度変更機能を搭載した物です。(重大なバグがありまともに使用できません。)
 ### 部品
 |部品|数量|品番,リンク|
@@ -86,20 +104,23 @@
 　プリント基板、ブレットボード基板を用いた接続器の組み立て方法は、[こちらの記事](https://zenn.dev/kasashiki/articles/28d31814b8bf86)で詳細に解説しています。プログラムの書き込みもこちらで解説しています。
 
 ### WEB感度変更
- GitHub Pagesでデプロイしました。使用方法はページに記載しています。[gitHub](https://github.com/kasasiki3/ver1.3_webapp_rp2040version),[ページ](https://kasasiki3.github.io/ver1.3_webapp_rp2040version/)
+ GitHub Pagesでデプロイしました。使用方法はページに記載しています。　　
+ ##### [感度変更ページ](https://kasasiki3.github.io/ver1.3_webapp_rp2040version/)
+ ##### [gitHub](https://github.com/kasasiki3/ver1.3_webapp_rp2040version)
 
 ### picoSDK(改造や開発)
  [Raspberry Pi Pico Visual Studio Code extension](https://github.com/raspberrypi/pico-vscode)を利用して開発しました。
 
  ## ・センサー
  ピエゾ素子を接続器につなぐだけですが、ここに例を示します。画像の様にハンダ付けをしてください。また、ケーブルを2本つなぎ80cmに延長します。
+
+ <img src=images\images\PXL_20250214_093337377.jpg width= "250px" >
  
  | 部品 | 数量 | リンク |
 | ---- | ---- | ---- |
 | ピエゾ素子(35mm)| 4 | [aliexpress](https://ja.aliexpress.com/item/1005005407839815.html)|
 | 工作用ケーブル(40cm) | 1個(1ピエゾ素子につき4本) |[aliexpress](https://ja.aliexpress.com/item/32996173648.html?spm=a2g0o.order_list.order_list_main.155.7804585aMSNuHa&gatewayAdapt=glo2jpn)|
+
  
 ## License
 *** by kasashiki is licensed under the Apache License, Version2.0
-
-#自作おうち太鼓#HIDtaiko#接続器
