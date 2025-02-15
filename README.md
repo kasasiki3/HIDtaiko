@@ -3,7 +3,9 @@
  <img src=images\images\entrance.png width= "800px" >
 
 
-質問は[XのDM](https://lit.link/kasashiki)にお願いします。
+質問はXのDMにお願いします。
+
+[リンクまとめ](https://lit.link/kasashiki)
 
 ## ・基盤
 
