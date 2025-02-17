@@ -2,10 +2,10 @@
 ##### 低価格で高性能なおうち太鼓プロジェクト
  <img src=images\images\entrance.png width= "800px" >
 
+## ・はじめに
+##### 質問、指摘、情報などXのDMにてお待ちしています！！気軽に声をかけてください！！
 
-質問はXのDMにお願いします。
-
-[リンクまとめ](https://lit.link/kasashiki)
+##### 私の[shop,X,youtube,zenn(記事)](https://lit.link/kasashiki)--チェックしてください!!--
 
 ## ・基盤
 
@@ -35,7 +35,7 @@
  <img src=images\images\legs.png width= "300px" >
 
 ## ・接続器
-#### HIDtaikoの接続器は大きく分けて2種類に分かれています。以下に概要を示します。
+#### HIDtaikoの接続器は大きく分けて2種類に分かれています。どちらも常に単純です。以下に概要を示します。
  #### ・Arduino IDEを使用するタイプ
 ※改造目的、switchでの使用、arduinoIDEに関する知識がある人におすすめです。
 
@@ -136,13 +136,19 @@
 
  ## ・センサー
  ピエゾ素子を接続器につなぐだけですが、ここに例を示します。画像の様にハンダ付けをしてください。また、ケーブルを2本つなぎ80cmに延長します。
+ ・センサーの固定にはねじ止め or 塗装用マスキングテープを推奨しています。
 
  <img src=images\images\PXL_20250214_093337377.jpg width= "250px" >
  
  | 部品 | 数量 | リンク |
 | ---- | ---- | ---- |
 | ピエゾ素子(35mm)| 4 | [aliexpress](https://ja.aliexpress.com/item/1005005407839815.html)|
+|ピエゾ素子(ACに近い)|4|[aliexpress](https://ja.aliexpress.com/item/1005007327162214.html?spm=a2g0o.order_list.order_list_main.160.fafa585aYQ6ty5&gatewayAdapt=glo2jpn)|
 | 工作用ケーブル(40cm) | 1個(1ピエゾ素子につき4本) |[aliexpress](https://ja.aliexpress.com/item/32996173648.html?spm=a2g0o.order_list.order_list_main.155.7804585aMSNuHa&gatewayAdapt=glo2jpn)|
+
+## 面
+　私はAC(ニジイロ)面と太鼓フォース面の2つしかテストできていません。情報の提供やアドバイスをお待ちしています。
+ ##### 価格,入手性が微妙ですがAC面をお勧めします。太鼓フォース面は寸法と叩き心地がACと違います。不具合をできるだけ起こしたくないのであればAC面を購入してください。
 
  
 ## License
