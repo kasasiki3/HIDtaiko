@@ -7,6 +7,7 @@
 
 
 long int timer_b[4] = {0,0,0,0}; // すべての時間,ドンの時間,カッの時間,
+long int timer_n[4];
 
 // GPIOピンとキーコードの対応を表す構造体
 struct PinKey
@@ -80,50 +81,54 @@ public:
 			adc_select_input(i);//このピンのキーを選択
 			long int result = adc_read();//選択されたpinの情報を読み取る
 
-			if (result - result_ac[0] > kando[0] && i == 0 && main_timer - timer_b[0] >= kando[4] && main_timer - timer_b[2] > kando[6]) // 押されている場合
+			if (result - result_ac[0] > kando[0] && i == 0 && main_timer - timer_b[0] >= kando[4] && main_timer - timer_b[2] > kando[6] && main_timer - timer_n[0] > kando[8]) // 押されている場合
 			{
 				key_codes[index] = pin_keys[i].key; // キーコードを設定
 				changed = true;
 				index++;
 				timer_b[0] = millis();
 				timer_b[1] = millis();
+				timer_n[0] = millis();
 				if (index >= 3) // 最大6つのキー入力
 				{
 					break;
 				}
 			}
 			
-			else if (result - result_ac[1] > kando[1] && i == 1 && main_timer - timer_b[1] >= kando[5]) // 押されている場合
+			else if (result - result_ac[1] > kando[1] && i == 1 && main_timer - timer_b[1] >= kando[5] && main_timer - timer_n[1] > kando[8]) // 押されている場合
 			{
 				key_codes[index] = pin_keys[i].key; // キーコードを設定
 				changed = true;
 				index++;
 				timer_b[0] = millis();
 				timer_b[2] = millis();
+				timer_n[1] = millis();
 				if (index >= 3) // 最大6つのキー入力
 				{
 					break;
 				}
 			}
-			else if (result - result_ac[2] > kando[2] && i == 2 && main_timer - timer_b[2] >= kando[5]) // 押されている場合
+			else if (result - result_ac[2] > kando[2] && i == 2 && main_timer - timer_b[2] >= kando[5] && main_timer - timer_n[2] > kando[8]) // 押されている場合
 			{
 				key_codes[index] = pin_keys[i].key; // キーコードを設定
 				changed = true;
 				index++;
 				timer_b[0] = millis();
 				timer_b[2] = millis();
+				timer_n[2] = millis();
 				if (index >= 3) // 最大6つのキー入力
 				{
 					break;
 				}
 			}
-			else if (result - result_ac[3] > kando[3] && i == 3 && main_timer - timer_b[3] >= kando[4] && main_timer - timer_b[2] > kando[6]) // 押されている場合
+			else if (result - result_ac[3] > kando[3] && i == 3 && main_timer - timer_b[3] >= kando[4] && main_timer - timer_b[2] > kando[6] && main_timer - timer_n[3] > kando[8]) // 押されている場合
 			{
 				key_codes[index] = pin_keys[i].key; // キーコードを設定
 				changed = true;
 				index++;
 				timer_b[0] = millis();
 				timer_b[1] = millis();
+				timer_n[3] = millis();
 				if (index >= 3) // 最大6つのキー入力
 				{
 					break;

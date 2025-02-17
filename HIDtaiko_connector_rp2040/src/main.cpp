@@ -16,27 +16,22 @@
 
 
 static void save_setting_to_flash(void){
-    // W25Q16JVの最終ブロック(Block31)のセクタ0の先頭アドレス = 0x1F0000
     const uint32_t FLASH_TARGET_OFFSET = 0x1F0000;
-    // W25Q16JVの書き込み最小単位 = FLASH_PAGE_SIZE(256Byte)
-    // FLASH_PAGE_SIZE(256Byte)はflash.hで定義済
-    uint8_t kando_uint8_t[FLASH_PAGE_SIZE];
+    
+    uint16_t kando_uint16_t[9];  // uint16_t型の配列に変更
     for(int i = 0; i < 9; i++){
-        kando_uint8_t[i] =  static_cast<uint8_t>(kando[i]);
+        kando_uint16_t[i] = static_cast<uint16_t>(kando[i]);
     }
 
-    // 割り込み無効にする
+    uint8_t buffer[FLASH_PAGE_SIZE] = {0}; // 256バイトのバッファを用意
+    memcpy(buffer, kando_uint16_t, sizeof(kando_uint16_t)); // バッファにデータをコピー
+
     uint32_t ints = save_and_disable_interrupts();
-    // Flash消去。
-    //  消去単位はflash.hで定義されている FLASH_SECTOR_SIZE(4096Byte) の倍数とする
     flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
-    // Flash書き込み。
-    //  書込単位はflash.hで定義されている FLASH_PAGE_SIZE(256Byte) の倍数とする
-    flash_range_program(FLASH_TARGET_OFFSET, kando_uint8_t, FLASH_PAGE_SIZE);
-    // 割り込みフラグを戻す
+    flash_range_program(FLASH_TARGET_OFFSET, buffer, FLASH_PAGE_SIZE);
     restore_interrupts(ints);
-   // printf("書き込み完了");
 }
+
 
 
 
@@ -44,17 +39,18 @@ uint8_t g_read_data[9];
 int kando3[9];
 
 void load_setting_from_flash(void){
-    // W25Q16JVの最終ブロック(Block31)のセクタ0の先頭アドレス = 0x1F0000
     const uint32_t FLASH_TARGET_OFFSET = 0x1F0000;
-    // XIP_BASE(0x10000000)はflash.hで定義済み
-    const uint8_t *g_read_data = (const uint8_t *) (XIP_BASE + FLASH_TARGET_OFFSET);
+    const uint8_t *flash_data = (const uint8_t *)(XIP_BASE + FLASH_TARGET_OFFSET);
+
+    uint16_t kando_uint16_t[9];
+    memcpy(kando_uint16_t, flash_data, sizeof(kando_uint16_t)); // フラッシュからデータをコピー
 
     for(int i = 0; i < 9; i++){
-        kando[i] = static_cast<int>(g_read_data[i]);
-        printf("%d\n", kando3[i]); 
+        kando[i] = static_cast<int>(kando_uint16_t[i]);
+        printf("%d\n", kando[i]); 
     }
-  //  printf("読み込み官僚");
 }
+
 
 void hid_task(void);
 
