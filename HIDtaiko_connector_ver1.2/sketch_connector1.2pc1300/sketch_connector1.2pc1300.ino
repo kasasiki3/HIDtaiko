@@ -45,7 +45,7 @@ char A = 2;
 char B = 8; //何かkeyが押されてからドンの入力を受け付けない時間(ミリ秒)
 char C = 30;//何かkeyが押されてからカッの入力を受け付けない時間(ミリ秒)
 char p1 = 23;//カッが入力されてからドンの入力を受け付けない時間(ミリ秒)
-
+char ha = 20;//公式は20くらい　シュミレーターは0
 long int sv1 =  0;
 long int sv2 =  0;
 long int sv3 =  0;
@@ -86,22 +86,30 @@ void loop() {
   timec = millis();
 
   if (a3 - sv3 >= se3 && timec - ti3 > A && timec- ti > C) {
-  Keyboard.write(left);
+  Keyboard.press(left);
+  delay(ha);
+  Keyboard.release(left);
   ti3 = millis();
   ti = millis();
   }
     if (a0 - sv0 >= se0 && timec - ti0 > A && timec- ti > C) {
-  Keyboard.write(right);
+  Keyboard.press(right);
+  delay(ha);
+  Keyboard.release(right);
   ti0 = millis();
   ti = millis();
   }
     if (a1 - sv1 >= se1 && timec - ti1 > A && timec- ti > B && timec - ti0 > p1 && timec - ti3 > p1) { 
-  Keyboard.write(middletight);
+  Keyboard.press(middletight);
+  delay(ha);
+  Keyboard.release(middletight);
   ti1 = millis();
   ti = millis();
   }
     if (a2 - sv2 >= se2 && timec - ti2 > A && timec- ti > B && timec - ti0 > p1 && timec - ti3 > p1) {
-  Keyboard.write(middleleft);
+  Keyboard.press(middleleft);
+  delay(ha);
+  Keyboard.release(middleleft);
   ti2 = millis();
   ti = millis();
   }
