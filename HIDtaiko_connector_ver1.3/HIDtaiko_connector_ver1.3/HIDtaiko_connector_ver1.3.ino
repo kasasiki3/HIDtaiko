@@ -56,7 +56,7 @@ char right = 'k';       //右カッ
 char A = 16; 
 char B = 10; //何かkeyが押されてからドンの入力を受け付けない時間(ミリ秒)
 char C = 30;//何かkeyが押されてからカッの入力を受け付けない時間(ミリ秒)
-char p1 = 26;//カッが入力されてからドンの入力を受け付けない時間(ミリ秒)
+char p1 = 30;//カッが入力されてからドンの入力を受け付けない時間(ミリ秒)
 char ha = 0;
 
 //SW(調節はお勧めしません)
@@ -192,7 +192,7 @@ void loop() {
   long int a2 = analogRead(A2pin);
   time = millis();
 
-  if (a3 - sv3 >= se3 && time - ti3 > A && time- ti > C) {
+  if (a3 - sv3 >= se3 && time - ti3 > A && time- ti > C && time - ti1 > p1 && time - ti2 > p1) {
  // Keyboard.write(left);
   Keyboard.press(left);
   delay(ha);
@@ -200,7 +200,7 @@ void loop() {
   ti3 = millis();
   ti = millis();
   }
-    if (a0 - sv0 >= se0 && time - ti0 > A && time- ti > C) {
+    if (a0 - sv0 >= se0 && time - ti0 > A && time- ti > C && time - ti1 > p1 && time - ti2 > p1) {
  // Keyboard.write(right);
   Keyboard.press(right);
   delay(ha);
