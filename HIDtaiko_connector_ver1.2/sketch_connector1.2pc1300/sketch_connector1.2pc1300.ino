@@ -85,14 +85,14 @@ void loop() {
   long int a2 = analogRead(A2pin);
   timec = millis();
 
-  if (a3 - sv3 >= se3 && timec - ti3 > A && timec- ti > C) {
+  if (a3 - sv3 >= se3 && timec - ti3 > A && timec- ti > C && timec - ti1 > p1 && timec - ti2 > p1) {
   Keyboard.press(left);
   delay(ha);
   Keyboard.release(left);
   ti3 = millis();
   ti = millis();
   }
-    if (a0 - sv0 >= se0 && timec - ti0 > A && timec- ti > C) {
+    if (a0 - sv0 >= se0 && timec - ti0 > A && timec- ti > C && timec - ti1 > p1 && timec - ti2 > p1) {
   Keyboard.press(right);
   delay(ha);
   Keyboard.release(right);
