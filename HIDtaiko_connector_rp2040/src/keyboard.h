@@ -100,13 +100,13 @@ public:
 
 
             // 各キーの判定条件
-            if (result - result_ac[0] > kando[0] && i == 0 &&//感度 F
+            if (result - result_ac[2] > kando[2] && i == 2 &&//感度 J
                 main_timer - timer_face >= kando[4] &&//面が入力されてからのdelay
                 main_timer - timer_edge > kando[6] &&//縁が入力されてからのdelay
-                main_timer - timer_f > kando[8]) {//個のdelay
+                main_timer - timer_j > kando[8]) {//個のdelay
                 key_codes[index++] = pin_keys[i].key;
                 changed = true;
-                timer_face = timer_f = millis();
+                timer_face = timer_j = millis();
             }
             else if (result - result_ac[1] > kando[1] && i == 1 &&//感度 D
                      main_timer - timer_edge >= kando[5] &&//縁が入力されてからのdelay
@@ -117,13 +117,13 @@ public:
                 timer_edge = timer_d = millis();
             }
             
-            else if (result - result_ac[2] > kando[2] && i == 2 &&//感度 J
+            else if (result - result_ac[0] > kando[0] && i == 0 &&//感度 F
                      main_timer - timer_face >= kando[4] &&//面が入力されてからのdelay
                      main_timer - timer_edge > kando[6] &&//縁が入力されてからのdelay
-                     main_timer - timer_j > kando[8]) {//個のdelay
+                     main_timer - timer_f > kando[8]) {//個のdelay
                 key_codes[index++] = pin_keys[i].key;
                 changed = true;
-                timer_face = timer_j = millis();
+                timer_face = timer_f = millis();
             }
             else if (result - result_ac[3] > kando[3] && i == 3 &&//感度 K
                      main_timer - timer_edge >= kando[5] &&//縁が入力されてからのdelay
@@ -137,8 +137,8 @@ public:
             // ADC基準値を更新
             result_ac[i] = result;
 
-            // 最大3つのキーまで処理
-            if (index >= 3) {
+            // 最大6つのキーまで処理
+            if (index >= 6) {
                 break;
             }
         }

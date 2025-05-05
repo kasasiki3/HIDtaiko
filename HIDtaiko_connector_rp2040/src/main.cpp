@@ -155,7 +155,7 @@ void serial_task(void){
     }
 
 }
-
+/*
 static void send_hid_report(bool keys_pressed)
 {
     // HIDがまだ準備できていない場合はスキップ
@@ -184,6 +184,42 @@ static void send_hid_report(bool keys_pressed)
         send_empty = false;
     }
 }
+    */
+   static void send_hid_report(bool keys_pressed)
+   {
+       static bool send_empty = false;
+       static uint32_t last_send_time = 0;
+       static bool waiting = false;
+   
+       uint32_t now = keyboard.millis();
+   
+       if (!tud_hid_ready()) return;
+   
+       if (keys_pressed && !waiting)
+       {
+           tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, keyboard.key_codes);
+           send_empty = true;
+           waiting = true;
+           last_send_time = now;
+       }
+       else if (waiting)
+       {
+           // kando[7]ミリ秒経過したら空レポートを送信
+           if (now - last_send_time >= kando[7]) {
+               tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
+               waiting = false;
+           }
+       }
+       else
+       {
+           // キーが離されていて、直前に何か送っていたら空レポートを送信
+           if (send_empty) {
+               tud_hid_keyboard_report(REPORT_ID_KEYBOARD, 0, NULL);
+               send_empty = false;
+           }
+       }
+   }
+   
 
 // 10msごとにピンをポーリングし、レポートを送信
 void hid_task(void)
