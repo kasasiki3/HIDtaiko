@@ -31,6 +31,7 @@
 
 # ◇[基盤](drumhead/readme_drumhead.md)
 <img src="images/wood.png" width= "500px" >
+
 ## webサイトで基盤のデザインを確認できます:[基盤3Dデータ](https://a360.co/4iZLSSL)
 
 ## 基盤の制作方法→記事:[zeen](https://zenn.dev/kasashiki/articles/7bf286b8120f90) 動画:[youtube](https://www.youtube.com/watch?v=5O0MgKzX0PY)
@@ -49,7 +50,7 @@
 
 GSS-4SAとAT3040どちらもしっかりと固定することで弱い力でも反応します。しかし、GSS-4SAの方が性能が良いです。設定に余裕が生まれます。価格にかなり差があるため、最初はAT3040センサを購入することをお勧めします。
 
-※組み立てガイドは近日公開します。
+### [センサ組み立てガイド](drumhead/sensor.md)
 
 | 名称 | リンク | 個数 | 合計 |
 |------|--------|------|------|
