@@ -59,11 +59,6 @@ GSS-4SAとAT3040どちらもしっかりと固定することで弱い力でも�
 | ケーブル | [リンク](https://ja.aliexpress.com/item/1005005364298980.html?spm=a2g0o.order_list.order_list_main.11.1bc9585anPfqkx&gatewayAdapt=glo2jpn) | 1セット | 390円 |
 |固定用M2ネジ|[amazon](https://www.amazon.co.jp/dp/B00AXVBDSO?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_3)|8本|700円|
 
-#### [AT3040sensor固定用パーツ(3Dプリント)](drumhead/AT3040sensor_look)
-センサ固定の際に、こちらを用いることでより確実な固定が可能です。
-M3L10ネジを用います。PLAなどで印刷してください。
-<img src="drumhead\images\AT3040 sensor look.png" width= "500px" >
-
 
 # 質問はXのDMにお願いします。
 [lit.link](https://lit.link/kasashiki)

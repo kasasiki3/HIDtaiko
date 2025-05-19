@@ -67,3 +67,11 @@
 
 <img src="images\sensor\wiring.png" width= "500px" >
 
+
+### [AT3040sensor固定用パーツ(3Dプリント)](drumhead/AT3040sensor_look)
+センサ固定の際に、こちらを用いることでより確実な固定が可能です。
+M3L10ネジを用います。PLAなどで印刷してください。
+
+<img src="images\AT3040 sensor look.png" width= "500px" >
+
+
