@@ -23,13 +23,14 @@
 
 ・旧ダブル連打(ドキムネ):1000
 
-#### [プレイ動画](https://www.youtube.com/watch?v=6kISQiHiIU8&t=2s)
+
+
+### [プレイ動画(youtube)](https://www.youtube.com/watch?v=6kISQiHiIU8&t=2s)
 
 
 # ◇RP2040接続器ver1.1
 
-#### vショットキーバリアダイオードを用いたクランプ回路を追加し、性能、安定感が向上しました。
-#### ※制作ガイドは近日公開します。
+#### ショットキーバリアダイオードを用いたクランプ回路を追加し、性能、安定感が向上しました。
 <img src="images\ver1.1_circuit.png" width= "500px" >
 <img src="images\rp2040_ver1.1.jpg" width= "500px" >
 
@@ -57,7 +58,7 @@
 
 #### [プレイ動画](https://www.youtube.com/watch?v=wMSDLN9h2Co)
 
-# rp2040zero接続器作り方
+# [最小構成]rp2040zero接続器作り方
 
 ## ◇はじめに
 #### ・この解説ははんだ付けの知識、簡単な回路図を読む力が必要です。もし不明な点がありましたらDMにて質問してください。
@@ -124,14 +125,14 @@
 
 ## ◇ファームウェア書き込み
 
-#### [ファームウェア](original_uf2/hidtaiko.uf2)をダウンロードし、エクスプローラーで開いてください。
+#### [ファームウェア](original_uf2)をダウンロードし、エクスプローラーで開いてください。
 #### 次に、このボタンを押しながらUSBケーブルでPCに接続します
 
 <img src="images\rp2040build guide\3.jpg" width= "500px" >
 
 #### ストレージとして認識されるのでファイルを入れます。
 
-GIF
+![load_farmweare](https://private-user-images.githubusercontent.com/121206130/450171500-967b256d-db25-4723-819e-95d006e9858a.gif?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NDg4Njc4NDYsIm5iZiI6MTc0ODg2NzU0NiwicGF0aCI6Ii8xMjEyMDYxMzAvNDUwMTcxNTAwLTk2N2IyNTZkLWRiMjUtNDcyMy04MTllLTk1ZDAwNmU5ODU4YS5naWY_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNjAyJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDYwMlQxMjMyMjZaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1kYTI4N2FiMjhkYmExNzA4OGJiM2UwOGMxMTAzOWMwODE5MTQ5MGMwNzY1ZmYwOWRjZmYwY2MxNGQwNjQxZDFmJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.-4nUcVKiAL4UluzAA3M49DCF8RqHaUED3HQCSlj3e-s)
 
 ## ◇感度変更
 
