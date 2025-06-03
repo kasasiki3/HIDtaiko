@@ -10,6 +10,7 @@
 └── README.md(メイン)
     ├── rp2040readme.md(RP2040接続器の組み立て方、詳細)
     ├── readme_drumhead.md(基盤、詳細)
+    ├──drumhead/sensor.md(センサー組み立てガイド)
 
 </pre>
 
