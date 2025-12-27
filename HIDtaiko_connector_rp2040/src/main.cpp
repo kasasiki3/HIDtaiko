@@ -71,6 +71,9 @@ volatile bool data_received = false;
 void tud_cdc_rx_cb(uint8_t itf) {
     data_received = true;  // データが届いたことを示すフラグを立てる
 }
+
+ int usb_hid_poll_interval = 1; // Set polling rate to 1ms
+ 
 /*------------- メイン関数 -------------1*/
 int main(void){
     board_init();

@@ -43,10 +43,10 @@ class KeyBoard {
 private:
     static constexpr size_t num_pins = 4; // 使用ピン数
     const PinKey pin_keys[num_pins] = {
-        {0, HID_KEY_F},
-        {1, HID_KEY_D},
-        {2, HID_KEY_J},
-        {3, HID_KEY_K},
+        {0, HID_KEY_C},//X,C,N,M
+        {1, HID_KEY_X},
+        {2, HID_KEY_N},
+        {3, HID_KEY_M},
     };
 
 public:
