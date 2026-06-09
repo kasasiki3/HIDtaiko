@@ -2,6 +2,8 @@
 #### 低価格で高性能なおうち太鼓プロジェクト
 #### HIDtaikoでは[基盤](drumhead/readme_drumhead.md)、[接続器](HIDtaiko_connector_rp2040/rp2040readme.md)の設計を行っています。
 
+[English README](README_EN.md)
+
  <img src=images\entrance.png width= "800px" >
  
 # ◇readme構造
@@ -14,11 +16,15 @@
 </pre>
 
 # ◇接続器
+
+> ## [→ RP2040接続器 組み立てガイド](HIDtaiko_connector_rp2040/rp2040readme.md)
+> **最新・最安・最高性能のおすすめモデル**（最安800円〜、簡単なはんだ付けのみ）
+
 ## 各接続器の比較表
 | 項目| 1.2接続器|1.3接続器|2.0接続器| [RP2040接続器](HIDtaiko_connector_rp2040/rp2040readme.md)|
 |-----|---------|-------|-----------------|-----|
-| 対応デバイス     | PC, Switch | PC| PC, Switch| PC |
-| 感度変更方法     |Arduino IDEでスケッチを書き換え| 感度変更サイトで変更可能 | 接続器単体で変更可能 | 感度変更サイトで変更可能 |
+| 対応デバイス     | PC, Switch | PC| PC, Switch| PC,(switchに対応予定) |
+| 感度変更方法     |感度変更サイトで変更可能| 感度変更サイトで変更可能 | 接続器単体で変更可能 | 感度変更サイトで変更可能 |
 | ファームウェア   | Arduino IDE| Arduino IDE|Arduino IDE| Pico SDK|
 | 回路             | 簡易的な1MΩ抵抗| 簡易的な1MΩ抵抗| オペアンプによる信号の増幅| ショットキーバリアダイオードクランプ回路|
 | 改造のしやすさ   | 簡単| 簡単| 簡単| 難しい|
@@ -29,7 +35,31 @@
 
 
 
-# ◇[基盤](drumhead/readme_drumhead.md)
+# ◇感度変更サイト
+
+**[→ 感度変更サイトを開く](https://kasasiki3.github.io/HIDtaiko/)**（Chrome / Edge のみ対応）
+
+接続器を PC に繋いだままブラウザから感度・ディレイを調整できます。V1.1（RP2040）・V1.2 に対応。
+
+## 仕組み
+
+```
+ピエゾ → ADC（アナログ読み取り）→ 差分検出 → 閾値判定 → キー入力
+```
+
+ピエゾが振動すると電圧が変化します。マイコンは直前サンプルとの差分（デルタ）を計算し、設定した閾値（感度）を超えたときにキー入力を発生させます。
+
+誤検出を防ぐためのタイマー（Delay）も持っており、入力後の一定時間は同センサーや隣接センサーからの入力を無視します。
+
+| パラメータ | 役割 |
+|---|---|
+| 感度（Sensitivity） | デルタがこの値を超えると入力。値が大きいほど感度が低い |
+| Adelay | 同センサーの再入力クールダウン |
+| Bdelay | 面（ドン）共有クールダウン |
+| Cdelay | 縁（カッ）共有クールダウン |
+| Ddelay | 面打後に縁を、縁打後に面を無視する時間 |
+
+# ◇[基盤の作り方](drumhead/readme_drumhead.md)
 <img src="images/wood.png" width= "500px" >
 
 ## webサイトで基盤のデザインを確認できます:[基盤3Dデータ](https://a360.co/4iZLSSL)

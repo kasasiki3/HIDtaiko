@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HIDtaiko V1.2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="main.css">
+  <link rel="icon" href="img/favicon.ico">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-left">
+      <h1>HIDtaiko</h1>
+      <nav class="version-nav">
+        <a href="index.html" class="version-link">V1.1</a>
+        <a href="v12.html" class="version-link version-link--active">V1.2</a>
+      </nav>
+      <label class="ios-switch">
+        <span class="ios-sw-label">JP</span>
+        <input type="checkbox" id="langToggle">
+        <span class="ios-track"></span>
+        <span class="ios-sw-label">EN</span>
+      </label>
+    </div>
+    <div class="header-links">
+      <a href="https://github.com/kasasiki3/HIDtaiko" target="_blank" rel="noopener" title="GitHub" class="header-link">
+        <i class="fa-brands fa-github"></i>
+      </a>
+      <a href="https://www.youtube.com/channel/UCN6--q2vATunlbG3SnSLd7g?sub_confirmation=1" target="_blank" rel="noopener" title="YouTube" class="header-link header-link--yt">
+        <i class="fa-brands fa-youtube"></i>
+      </a>
+      <a href="https://x.com/kasashiki" target="_blank" rel="noopener" title="X (Twitter)" class="header-link header-link--x">
+        <i class="fa-brands fa-x-twitter"></i>
+      </a>
+      <a href="https://zenn.dev/kasashiki" target="_blank" rel="noopener" title="Zenn" class="header-link header-link--zenn">
+        <svg viewBox="0 0 88 88" fill="currentColor" aria-hidden="true" style="width:1em;height:1em;">
+          <path d="M0 88L64 0h24L24 88H0zM64 88l24-35.3V88z"/>
+        </svg>
+      </a>
+    </div>
+    <div class="header-status">
+      <span class="status-dot" id="status-dot"></span>
+      <a class="taiko-icon" href="https://github.com/kasasiki3/HIDtaiko" target="_blank" rel="noopener" title="GitHub: kasasiki3/HIDtaiko">🥁</a>
+      <span id="situation" class="situation"></span>
+    </div>
+  </header>
+
+  <main class="app-layout">
+
+    <!-- ── Controls ── -->
+    <section class="controls-panel">
+
+      <div class="card button-card">
+        <div class="button-group">
+          <button id="connection">
+            <i class="fa-solid fa-plug btn-icon"></i>
+            <span class="i18n-ja">接続</span><span class="i18n-en">Connect</span>
+          </button>
+          <button id="disconnection">
+            <i class="fa-solid fa-plug-circle-xmark btn-icon"></i>
+            <span class="i18n-ja">切断</span><span class="i18n-en">Disconnect</span>
+          </button>
+          <button id="sendButton">
+            <i class="fa-solid fa-paper-plane btn-icon"></i>
+            <span class="i18n-ja">感度送信</span><span class="i18n-en">Send</span>
+          </button>
+          <button id="requestButton">
+            <i class="fa-solid fa-rotate btn-icon"></i>
+            <span class="i18n-ja">感度要求</span><span class="i18n-en">Request</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="i18n-ja">感度</span><span class="i18n-en">Sensitivity</span>
+        </div>
+
+        <div class="slider-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105242.png" alt="右縁">
+            <span class="pad-name"><span class="i18n-ja">右縁</span><span class="i18n-en">R.Rim</span></span>
+          </div>
+          <input id="volumeSlider3" class="rim-sens" type="range" min="40" max="150" step="5" value="80">
+          <span class="slider-value" id="text3"></span>
+        </div>
+
+        <div class="slider-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105259.png" alt="右面">
+            <span class="pad-name"><span class="i18n-ja">右面</span><span class="i18n-en">R.Don</span></span>
+          </div>
+          <input id="volumeSlider2" class="don-sens" type="range" min="60" max="170" step="5" value="130">
+          <span class="slider-value" id="text2"></span>
+        </div>
+
+        <div class="slider-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105317.png" alt="左面">
+            <span class="pad-name"><span class="i18n-ja">左面</span><span class="i18n-en">L.Don</span></span>
+          </div>
+          <input id="volumeSlider1" class="don-sens" type="range" min="60" max="170" step="5" value="130">
+          <span class="slider-value" id="text1"></span>
+        </div>
+
+        <div class="slider-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105332.png" alt="左縁">
+            <span class="pad-name"><span class="i18n-ja">左縁</span><span class="i18n-en">L.Rim</span></span>
+          </div>
+          <input id="volumeSlider0" class="rim-sens" type="range" min="40" max="150" step="5" value="80">
+          <span class="slider-value" id="text0"></span>
+        </div>
+      </div>
+
+      <div class="mode-toggle-row">
+        <label class="ios-switch ios-switch--light">
+          <span class="ios-sw-label i18n-ja">高度な設定</span>
+          <span class="ios-sw-label i18n-en">Advanced</span>
+          <input type="checkbox" id="advancedToggle">
+          <span class="ios-track"></span>
+        </label>
+      </div>
+
+      <div class="card">
+        <div class="card-title">
+          <span class="i18n-ja">ディレイ</span><span class="i18n-en">Delay</span>
+        </div>
+
+        <div id="beginnerDelaySection">
+          <div class="slider-row">
+            <span class="label"><span class="i18n-ja">縁</span><span class="i18n-en">Rim</span></span>
+            <input id="rimDelaySlider" type="range" min="8" max="20" step="1" value="13">
+            <span class="slider-value" id="rimDelayText"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label"><span class="i18n-ja">面</span><span class="i18n-en">Don</span></span>
+            <input id="donDelaySlider" type="range" min="5" max="15" step="2" value="7">
+            <span class="slider-value" id="donDelayText"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label"><span class="i18n-ja">縁面相互</span><span class="i18n-en">Cross</span></span>
+            <input id="crossDelaySlider" type="range" min="5" max="17" step="3" value="8">
+            <span class="slider-value" id="crossDelayText"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row delay-toggle-item">
+            <div class="delay-toggle-lbl">
+              <span><span class="i18n-ja">公式/シミュレーター向け</span><span class="i18n-en">Official/Simulator</span></span>
+              <span class="delay-toggle-sub"><span class="i18n-ja">認識されない場合はONにする</span><span class="i18n-en">Turn ON if inputs aren't recognized</span></span>
+            </div>
+            <label class="ios-switch ios-switch--light">
+              <input type="checkbox" id="simulatorToggle">
+              <span class="ios-track"></span>
+            </label>
+          </div>
+        </div>
+
+        <div id="advancedDelaySection" style="display:none">
+          <div class="slider-row">
+            <span class="label">Adelay<br><small class="i18n-ja">面</small><small class="i18n-en">Don</small></span>
+            <input id="volumeSlider8" type="range" min="0" max="25" step="1" value="0">
+            <span class="slider-value" id="text8"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label">Adelay<br><small class="i18n-ja">縁</small><small class="i18n-en">Rim</small></span>
+            <input id="volumeSlider9" type="range" min="0" max="25" step="1" value="0">
+            <span class="slider-value" id="text9"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label">Bdelay</span>
+            <input id="volumeSlider4" type="range" min="1" max="40" step="1" value="6">
+            <span class="slider-value" id="text4"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label">Cdelay</span>
+            <input id="volumeSlider5" type="range" min="1" max="40" step="1" value="13">
+            <span class="slider-value" id="text5"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label">Ddelay</span>
+            <input id="volumeSlider6" type="range" min="1" max="40" step="1" value="10">
+            <span class="slider-value" id="text6"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label">Hdelay</span>
+            <input id="volumeSlider7" type="range" min="0" max="40" step="1" value="0">
+            <span class="slider-value" id="text7"></span>
+            <span class="unit">ms</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title keymap-title is-collapsed" id="keymapToggle">
+          <span class="i18n-ja">キー配置</span><span class="i18n-en">Key Layout</span>
+          <i class="fa-solid fa-chevron-down keymap-chevron"></i>
+        </div>
+        <div id="keymapContent" style="display: none">
+        <div class="keymap-buttons">
+          <button id="keyMapSendButton">
+            <i class="fa-solid fa-keyboard btn-icon"></i>
+            <span class="i18n-ja">キー配置送信</span><span class="i18n-en">Send Keys</span>
+          </button>
+          <button id="keyMapRequestButton">
+            <i class="fa-solid fa-rotate btn-icon"></i>
+            <span class="i18n-ja">キー配置要求</span><span class="i18n-en">Request Keys</span>
+          </button>
+        </div>
+        <div class="keymap-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105242.png" alt="右縁">
+            <span class="pad-name"><span class="i18n-ja">右縁</span><span class="i18n-en">R.Rim</span></span>
+          </div>
+          <select id="keymap3"></select>
+        </div>
+        <div class="keymap-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105259.png" alt="右面">
+            <span class="pad-name"><span class="i18n-ja">右面</span><span class="i18n-en">R.Don</span></span>
+          </div>
+          <select id="keymap2"></select>
+        </div>
+        <div class="keymap-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105317.png" alt="左面">
+            <span class="pad-name"><span class="i18n-ja">左面</span><span class="i18n-en">L.Don</span></span>
+          </div>
+          <select id="keymap1"></select>
+        </div>
+        <div class="keymap-row">
+          <div class="pad-label">
+            <img src="img/スクリーンショット 2025-01-28 105332.png" alt="左縁">
+            <span class="pad-name"><span class="i18n-ja">左縁</span><span class="i18n-en">L.Rim</span></span>
+          </div>
+          <select id="keymap0"></select>
+        </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Explanation ── -->
+    <aside class="explanation-panel">
+
+      <details open>
+        <summary>
+          <span class="i18n-ja">使い方</span><span class="i18n-en">How to Use</span>
+        </summary>
+        <div class="beginner-explain">
+          <div class="detail-body i18n-ja">
+            <ol>
+              <li>「接続」ボタンでデバイスを接続する<small>※ Chrome / Edge のみ</small></li>
+              <li>「感度要求」で現在の設定をデバイスから読み込む</li>
+              <li>感度スライダーを黄色の範囲内に調整する</li>
+              <li>多重入力が起きる場合は該当するディレイを少し大きくする</li>
+              <li>「感度送信」で設定を書き込む<small>フラッシュメモリに自動保存されます</small></li>
+            </ol>
+          </div>
+          <div class="detail-body i18n-en">
+            <ol>
+              <li>Click "Connect" and select the device<small>※ Chrome / Edge only</small></li>
+              <li>Click "Request" to load current settings from the device</li>
+              <li>Adjust sensitivity sliders within the yellow recommended range</li>
+              <li>If phantom inputs occur, slightly increase the corresponding delay</li>
+              <li>Click "Send" to apply<small>Automatically saved to flash memory</small></li>
+            </ol>
+          </div>
+        </div>
+        <div class="advanced-explain">
+          <div class="detail-body i18n-ja">
+            <ol>
+              <li>
+                「接続」で接続器を選択する
+                <small>※ Chrome / Edge 以外では接続できません</small>
+              </li>
+              <li>「感度送信」でデフォルト感度を書き込むか、「感度要求」で現在の感度を読み込む</li>
+              <li>スライダーで感度・各 Delay を調整する</li>
+              <li>「感度送信」で設定を送信する（フラッシュに自動保存）</li>
+            </ol>
+          </div>
+          <div class="detail-body i18n-en">
+            <ol>
+              <li>
+                Click "Connect" to select the device
+                <small>※ Chrome / Edge only</small>
+              </li>
+              <li>Click "Send" to write defaults, or "Request" to load current settings from the device</li>
+              <li>Adjust sensitivity and delay parameters with the sliders</li>
+              <li>Click "Send" to apply — automatically saved to flash</li>
+            </ol>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="i18n-ja">コネクタ配線</span><span class="i18n-en">Connector Wiring</span>
+        </summary>
+        <div class="detail-body i18n-ja">
+          <div class="wiring-warning">
+            <span class="wiring-warning-icon">⚠</span>
+            <span>ネジ・ラッチ面を上にして配線してください。行・列はコネクタのピン位置に対応しています。</span>
+          </div>
+          <table class="wiring-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>左縁</th>
+                <th>左面</th>
+                <th>右面</th>
+                <th>右縁</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>+</td><td>白</td><td>赤</td><td>緑</td><td>紫</td></tr>
+              <tr><td>−</td><td>黒</td><td>茶</td><td>青</td><td>灰</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="detail-body i18n-en">
+          <div class="wiring-warning">
+            <span class="wiring-warning-icon">⚠</span>
+            <span>Please wire with the screw/latch side facing up. The rows and columns correspond to the connector pins.</span>
+          </div>
+          <table class="wiring-table">
+            <thead>
+              <tr>
+                <th></th>
+                <th>L.Rim</th>
+                <th>L.Face</th>
+                <th>R.Face</th>
+                <th>R.Rim</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>+</td><td>White</td><td>Red</td><td>Green</td><td>Purple</td></tr>
+              <tr><td>−</td><td>Black</td><td>Brown</td><td>Blue</td><td>Gray</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="i18n-ja">各項目の説明</span><span class="i18n-en">Parameters</span>
+        </summary>
+
+        <div class="beginner-explain">
+          <div class="explanation-section i18n-ja">
+            <h4>感度</h4>
+            <p>各センサーの反応閾値です。<strong>値が低いほど感度が高く</strong>なります。黄色の範囲が推奨値です。多重入力が発生する場合は値を大きくしてください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Sensitivity</h4>
+            <p>Threshold for each sensor. <strong>Lower value = higher sensitivity.</strong> The yellow zone is the recommended range. Increase the value if phantom inputs occur.</p>
+          </div>
+          <div class="explanation-section i18n-ja">
+            <h4>縁ディレイ</h4>
+            <p>縁を連続で叩いたときに多重入力が起きる場合に大きくしてください。大きすぎると縁の連打が鈍くなります。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Rim Delay</h4>
+            <p>Increase if consecutive Rim hits cause phantom inputs. Too high will slow down Rim rolls.</p>
+          </div>
+          <div class="explanation-section i18n-ja">
+            <h4>面ディレイ</h4>
+            <p>面を連続で叩いたときに多重入力が起きる場合に大きくしてください。大きすぎると面の連打が鈍くなります。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Don Delay</h4>
+            <p>Increase if consecutive Don hits cause phantom inputs. Too high will slow down Don rolls.</p>
+          </div>
+          <div class="explanation-section i18n-ja">
+            <h4>縁面相互ディレイ</h4>
+            <p>面を叩いたときに縁が反応する、または縁を叩いたときに面が反応する場合に大きくしてください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Cross Delay</h4>
+            <p>Increase if hitting Don also triggers Rim, or vice versa.</p>
+          </div>
+          <div class="explanation-section i18n-ja">
+            <h4>公式/シミュレーター向け</h4>
+            <p>公式アプリや一部のシミュレーターでキーが認識されない場合はONにしてください（Hdelay=20ms が適用されます）。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Official/Simulator</h4>
+            <p>Turn ON if key inputs aren't recognized in the official app or some simulators (applies Hdelay = 20 ms).</p>
+          </div>
+        </div>
+
+        <div class="advanced-explain">
+          <div class="explanation-section i18n-ja">
+            <h4>感度</h4>
+            <div class="drum-icons">
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105332.png" alt="左縁">
+                <span>左縁</span>
+              </div>
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105317.png" alt="左面">
+                <span>左面</span>
+              </div>
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105259.png" alt="右面">
+                <span>右面</span>
+              </div>
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105242.png" alt="右縁">
+                <span>右縁</span>
+              </div>
+            </div>
+            <p>各センサーの閾値です。センサーの電圧がこの値を超えるとキー入力が発生します。<strong>値が低いほど感度が高く</strong>なります。多重入力が発生する箇所は感度を上げて（値を大きく）ください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Sensitivity</h4>
+            <div class="drum-icons">
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105332.png" alt="L.Rim">
+                <span>L.Rim</span>
+              </div>
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105317.png" alt="L.Don">
+                <span>L.Don</span>
+              </div>
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105259.png" alt="R.Don">
+                <span>R.Don</span>
+              </div>
+              <div class="drum-icon-item">
+                <img src="img/スクリーンショット 2025-01-28 105242.png" alt="R.Rim">
+                <span>R.Rim</span>
+              </div>
+            </div>
+            <p>Threshold for each sensor. A key fires when the voltage exceeds this value. <strong>Lower value = higher sensitivity.</strong> If phantom inputs occur, increase the value.</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h4>Adelay 面 / 縁 <span class="std">標準: 0 ms</span></h4>
+            <p>キー入力後、同じキーが再び受け付けるまでの待機時間。面と縁で個別に設定できます。叩いた箇所のみで多重入力が起きる場合に値を上げてください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Adelay Don / Rim <span class="std">Std: 0 ms</span></h4>
+            <p>Cooldown before the same sensor can fire again. Adjustable separately for Don and Rim. Increase if a single hit causes double input on the same sensor.</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h4>Bdelay <span class="std">標準: 6 ms</span></h4>
+            <p>面キー入力後、次の面入力を受け付けるまでの時間。大きすぎると面の連打が鈍くなります。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Bdelay <span class="std">Std: 6 ms</span></h4>
+            <p>Cooldown after a Don (center) hit before another Don can fire. Too high will slow down rolls.</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h4>Cdelay <span class="std">標準: 13 ms</span></h4>
+            <p>Bdelay の縁バージョンです。説明は Bdelay と同様です。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Cdelay <span class="std">Std: 13 ms</span></h4>
+            <p>Same as Bdelay but for Rim (edge) hits.</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h4>Ddelay <span class="std">標準: 10 ms</span></h4>
+            <p>面入力後に縁入力を制限する時間（逆も同様）。面を叩いたときに縁が多重する場合や、その逆の場合に値を上げてください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Ddelay <span class="std">Std: 10 ms</span></h4>
+            <p>Time to suppress Rim input after a Don hit (and vice versa). Increase if a Don hit also triggers a Rim, or vice versa.</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h4>Hdelay <span class="std">標準: 20 or 0 ms</span></h4>
+            <p>公式アプリや一部シミュレーター向けの入力制限。「メモ帳では入力できるがシミュレーターでは入力できない」場合に設定してください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h4>Hdelay <span class="std">Std: 20 or 0 ms</span></h4>
+            <p>Input throttle for the official app or some simulators. Set this if inputs work in Notepad but fail in a simulator.</p>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>
+          <span class="i18n-ja">感度調整のやり方</span><span class="i18n-en">Tuning Guide</span>
+        </summary>
+        <div class="beginner-explain">
+          <div class="detail-body i18n-ja">
+            <ol>
+              <li>感度スライダーを黄色の範囲内に設定する（初期値の目安）</li>
+              <li>実際に演奏して強打・弱打が確実に反応するか確認する</li>
+              <li>多重入力（1打で複数反応）が起きる場合は、該当するディレイを少しずつ大きくする
+                <ul>
+                  <li>縁で多重入力 → 縁ディレイを上げる</li>
+                  <li>面で多重入力 → 面ディレイを上げる</li>
+                  <li>面を叩いたとき縁が反応 → 縁面相互ディレイを上げる</li>
+                </ul>
+              </li>
+              <li>調整が終わったら「感度送信」で書き込む</li>
+            </ol>
+          </div>
+          <div class="detail-body i18n-en">
+            <ol>
+              <li>Set sensitivity sliders within the yellow recommended range as a starting point</li>
+              <li>Play and verify both strong and light hits register correctly</li>
+              <li>If phantom inputs occur, slightly increase the corresponding delay:
+                <ul>
+                  <li>Rim double input → increase Rim Delay</li>
+                  <li>Don double input → increase Don Delay</li>
+                  <li>Don hit also triggers Rim → increase Cross Delay</li>
+                </ul>
+              </li>
+              <li>When done, click "Send" to apply the settings</li>
+            </ol>
+          </div>
+        </div>
+        <div class="advanced-explain">
+          <div class="detail-body i18n-ja">
+            <ol>
+              <li>
+                <strong>感度設定</strong>
+                <small>強打・弱打どちらも確実に反応する中で、できるだけ<strong>値を大きく（感度を低く）</strong>設定する。</small>
+              </li>
+              <li>
+                <strong>Delay 調整</strong> — 以下の順で、誤反応しない範囲でできるだけ小さい値に絞る。
+                <ul>
+                  <li>Ddelay：面を叩いたとき縁が反応しなくなる最小値</li>
+                  <li>Bdelay：片方の面を強打したときもう一方の面が反応しなくなる最小値</li>
+                  <li>Adelay：同じセンサーが1打で2連発しなくなる最小値</li>
+                  <li>Cdelay：Adelay・Bdelay と同様に縁用で調整</li>
+                </ul>
+              </li>
+            </ol>
+            <p><strong>補足</strong> — サイトの初期値はおおよその目安です。感度を上げると（値を小さくすると）クロストークが増え Delay を増やす必要があります。逆に感度を下げると（値を大きくすると）Delay を短くできます。</p>
+          </div>
+          <div class="detail-body i18n-en">
+            <ol>
+              <li>
+                <strong>Sensitivity</strong>
+                <small>Find the <strong>highest value (lowest sensitivity)</strong> that still reliably registers both strong and light hits.</small>
+              </li>
+              <li>
+                <strong>Delay tuning</strong> — In the order below, minimize each value while eliminating phantom inputs.
+                <ul>
+                  <li>Ddelay: minimum value at which a Don hit no longer triggers a Rim</li>
+                  <li>Bdelay: minimum value at which a hard Don hit no longer triggers the opposite Don</li>
+                  <li>Adelay: minimum value at which a single hit no longer double-fires on the same sensor</li>
+                  <li>Cdelay: same as Adelay / Bdelay but for Rim hits</li>
+                </ul>
+              </li>
+            </ol>
+            <p><strong>Note</strong> — The default values on this site are rough guidelines. Raising sensitivity (lower value) increases crosstalk and requires higher delays. Lowering sensitivity (higher value) allows shorter delays.</p>
+          </div>
+        </div>
+      </details>
+
+      <details id="firmware-update">
+        <summary>
+          <span class="i18n-ja">ファームウェアのアップデート</span><span class="i18n-en">Firmware Update</span>
+        </summary>
+        <div class="detail-body i18n-ja">
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">準備</span>
+              <span>接続器のネジを外し、基板を取り出す</span>
+            </div>
+            <img src="img/nezi.jpg" class="fw-img" alt="ネジの場所">
+          </div>
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">1</span>
+              <span>DFU モードで PC に接続する</span>
+            </div>
+            <p>マイコンボードの <strong>BOOT ボタンを押しながら USB を差し</strong>、PC と接続します。エクスプローラーにストレージとして表示されたら成功です。</p>
+          </div>
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">2</span>
+              <span>GitHub からファームウェアをダウンロードする</span>
+            </div>
+            <p>① 「<strong>Code</strong>」ボタンをクリック &nbsp;→&nbsp; ② 「<strong>Download ZIP</strong>」を選択してダウンロードします。</p>
+            <img src="img/fw_github.webp" class="fw-img" alt="GitHub Code → Download ZIP">
+            <p>ダウンロードした ZIP を展開してください。</p>
+          </div>
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">3</span>
+              <span>.uf2 ファイルを書き込む</span>
+            </div>
+            <p>展開したフォルダの中から <code>HIDtaiko.uf2</code> を探し、DFU モードで認識されたストレージへ<strong>ドラッグ＆ドロップ</strong>します。ストレージの接続が自動的に切れたら書き込み完了です。</p>
+            <div class="fw-path">
+              HIDtaiko-master &nbsp;›&nbsp; HIDtaiko_connector_rp2040 &nbsp;›&nbsp; original_uf2
+            </div>
+            <img src="img/fw_path.png" class="fw-img" alt="uf2ファイルのパス">
+          </div>
+
+        </div>
+        <div class="detail-body i18n-en">
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">Prep</span>
+              <span>Remove the screws and take out the PCB</span>
+            </div>
+            <img src="img/nezi.jpg" class="fw-img" alt="Screw locations">
+          </div>
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">1</span>
+              <span>Connect in DFU mode</span>
+            </div>
+            <p>Hold the <strong>BOOT button</strong> while connecting the USB cable. The device will appear as a storage drive in Explorer.</p>
+          </div>
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">2</span>
+              <span>Download firmware from GitHub</span>
+            </div>
+            <p>① Click the <strong>Code</strong> button &nbsp;→&nbsp; ② Select <strong>Download ZIP</strong> and download.</p>
+            <img src="img/fw_github.webp" class="fw-img" alt="GitHub Code → Download ZIP">
+            <p>Extract the downloaded ZIP file.</p>
+          </div>
+
+          <div class="fw-step">
+            <div class="fw-step-header">
+              <span class="fw-step-num">3</span>
+              <span>Flash the .uf2 file</span>
+            </div>
+            <p>Find <code>HIDtaiko.uf2</code> in the extracted folder and <strong>drag &amp; drop</strong> it onto the DFU storage drive. The drive will disconnect automatically when done.</p>
+            <div class="fw-path">
+              HIDtaiko-master &nbsp;›&nbsp; HIDtaiko_connector_rp2040 &nbsp;›&nbsp; original_uf2
+            </div>
+            <img src="img/fw_path.png" class="fw-img" alt="uf2 file path">
+          </div>
+
+        </div>
+      </details>
+
+    </aside>
+  </main>
+
+  <script src="i18n.js"></script>
+  <script src="v12.js"></script>
+  <script>
+    if (sessionStorage.getItem('hidtaiko-open-fw')) {
+      sessionStorage.removeItem('hidtaiko-open-fw');
+      const el = document.getElementById('firmware-update');
+      if (el) { el.open = true; el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    }
+  </script>
+</body>
+</html>

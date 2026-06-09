@@ -29,7 +29,6 @@
 # ◇RP2040接続器ver1.1
 
 #### vショットキーバリアダイオードを用いたクランプ回路を追加し、性能、安定感が向上しました。
-#### ※制作ガイドは近日公開します。
 <img src="images\ver1.1_circuit.png" width= "500px" >
 <img src="images\rp2040_ver1.1.jpg" width= "500px" >
 
@@ -129,13 +128,10 @@
 
 <img src="images\rp2040build guide\3.jpg" width= "500px" >
 
-#### ストレージとして認識されるのでファイルを入れます。
+#### ストレージとして認識されるのでファームウェアをドラック＆ドロップで入れます。
 
-GIF
 
 ## ◇感度変更
-
-
 
 [感度変更アプリ](https://kasasiki3.github.io/ver1.3_webapp_rp2040version/)こちらにアクセスし、基本の感度を接続器に送ってください。
 

@@ -17,13 +17,13 @@
 static void save_setting_to_flash(void) {
     const uint32_t FLASH_TARGET_OFFSET = 0x1F0000;
 
-    uint16_t kando_uint16_t[9];
-    for (int i = 0; i < 9; i++) {
-        kando_uint16_t[i] = static_cast<uint16_t>(kando[i]);
-    }
+    uint16_t buf16[14] = {0};
+    for (int i = 0; i < 10; i++) buf16[i] = static_cast<uint16_t>(kando[i]);
+    // buf16[9]: reserved
+    for (int i = 0; i < 4; i++) buf16[10 + i] = key_map[i];
 
     uint8_t buffer[FLASH_PAGE_SIZE] = {0};
-    memcpy(buffer, kando_uint16_t, sizeof(kando_uint16_t));
+    memcpy(buffer, buf16, sizeof(buf16));
 
     uint32_t ints = save_and_disable_interrupts();
     flash_range_erase(FLASH_TARGET_OFFSET, FLASH_SECTOR_SIZE);
@@ -35,12 +35,16 @@ void load_setting_from_flash(void) {
     const uint32_t FLASH_TARGET_OFFSET = 0x1F0000;
     const uint8_t *flash_data = (const uint8_t *)(XIP_BASE + FLASH_TARGET_OFFSET);
 
-    uint16_t kando_uint16_t[9];
-    memcpy(kando_uint16_t, flash_data, sizeof(kando_uint16_t));
+    uint16_t buf16[14];
+    memcpy(buf16, flash_data, sizeof(buf16));
 
-    for (int i = 0; i < 9; i++) {
-        kando[i] = static_cast<int>(kando_uint16_t[i]);
+    for (int i = 0; i < 10; i++) {
+        kando[i] = static_cast<int>(buf16[i]);
         printf("%d\n", kando[i]);
+    }
+    for (int i = 0; i < 4; i++) {
+        uint16_t v = buf16[10 + i];
+        if (v >= 4 && v <= 0xFF) key_map[i] = static_cast<uint8_t>(v);
     }
 }
 
@@ -69,6 +73,9 @@ int main(void) {
     tusb_init();
     adc_init();
     adc_gpio_init(26);
+    adc_gpio_init(27);
+    adc_gpio_init(28);
+    adc_gpio_init(29);
     stdio_init_all();
     load_setting_from_flash();
 
@@ -84,49 +91,71 @@ int main(void) {
 }
 
 //-----------------------USB-----------------------
-bool serial_Mode;
-int count = 0;
+static char serial_line_buf[128] = {0};
+static int serial_line_pos = 0;
+
+static void process_serial_line(const char *line) {
+    if (strncmp(line, "SENS:", 5) == 0) {
+        char tmp[128];
+        strncpy(tmp, line + 5, sizeof(tmp) - 1);
+        tmp[sizeof(tmp) - 1] = '\0';
+        char *tok = strtok(tmp, ":");
+        while (tok) {
+            char *eq = strchr(tok, '=');
+            if (eq) {
+                *eq = '\0';
+                int k = atoi(tok), v = atoi(eq + 1);
+                if (k >= 0 && k < 10) kando[k] = v;
+            }
+            tok = strtok(NULL, ":");
+        }
+        printf("OK\n");
+    } else if (strncmp(line, "KEY:", 4) == 0) {
+        char tmp[32];
+        strncpy(tmp, line + 4, sizeof(tmp) - 1);
+        tmp[sizeof(tmp) - 1] = '\0';
+        char *tok = strtok(tmp, ":");
+        while (tok) {
+            char *eq = strchr(tok, '=');
+            if (eq) {
+                *eq = '\0';
+                int k = atoi(tok), v = atoi(eq + 1);
+                if (k >= 0 && k < 4) key_map[k] = static_cast<uint8_t>(v);
+            }
+            tok = strtok(NULL, ":");
+        }
+        printf("OK\n");
+    } else if (strcmp(line, "GETS") == 0) {
+        for (int i = 0; i < 10; i++) printf("%d:%d\n", i, kando[i]);
+        printf("OK\n");
+    } else if (strcmp(line, "GETK") == 0) {
+        for (int i = 0; i < 4; i++) printf("%d:%d\n", i, key_map[i]);
+        printf("OK\n");
+    } else if (strcmp(line, "SAVE") == 0) {
+        save_setting_to_flash();
+        printf("OK\n");
+    } else if (strcmp(line, "LOAD") == 0) {
+        load_setting_from_flash();
+        printf("OK\n");
+    }
+}
 
 void serial_task(void) {
-    char buf[32];
-    int len = tud_cdc_read(buf, sizeof(buf));
-    if (len <= 0) {
-        return;
-    }
-    buf[len] = '\0';
-    int received_value = std::atoi((char *)buf);
-
-    if (serial_Mode) {
-        char *token = strtok(buf, "/n");
-        while (token != NULL) {
-            char *colon = strchr(token, ':');
-            if (colon) {
-                *colon = '\0';
-                int key = atoi(token);
-                int value = atoi(colon + 1);
-                printf("Key: %d, Value: %d\n", key, value);
-                kando[key] = value;
-                count++;
-                if (count == 9) {
-                    count = 0;
-                    serial_Mode = false;
-                }
+    char buf[64];
+    int len;
+    while ((len = tud_cdc_read(buf, sizeof(buf))) > 0) {
+    for (int i = 0; i < len; i++) {
+        char c = buf[i];
+        if (c == '\n' || c == '\r') {
+            if (serial_line_pos > 0) {
+                serial_line_buf[serial_line_pos] = '\0';
+                process_serial_line(serial_line_buf);
+                serial_line_pos = 0;
             }
-            token = strtok(NULL, " ");
+        } else if (serial_line_pos < (int)sizeof(serial_line_buf) - 1) {
+            serial_line_buf[serial_line_pos++] = c;
         }
     }
-
-    if (received_value == 1000) {
-        for (int i = 0; i < 9; i++) {
-            printf("%d:%d\n", i, kando[i]);
-            sleep_us(5000);
-        }
-    } else if (received_value == 1001) {
-        save_setting_to_flash();
-    } else if (received_value == 1002) {
-        serial_Mode = true;
-    } else if (received_value == 1003) {
-        load_setting_from_flash();
     }
 }
 

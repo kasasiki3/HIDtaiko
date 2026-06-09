@@ -17,9 +17,11 @@ struct PinKey {
     const uint8_t key;
 };
 
-int kando[9] = {
-    80, 160, 160, 80, 30, 12, 35, 0, 0
+int kando[10] = {
+    80, 160, 160, 80, 30, 12, 35, 0, 0, 0
 };
+
+uint8_t key_map[4] = {HID_KEY_D, HID_KEY_F, HID_KEY_J, HID_KEY_K};
 /*
     0: 左縁の感度
     1: 左面の感度
@@ -29,7 +31,8 @@ int kando[9] = {
     5: 縁の入力受付時間 C
     6: 面入力時に縁を無視する時間 D
     7: シュミレーター用の入力制限 H
-    8: 単体の入力受付時間 A
+    8: 面の単体入力受付時間 A
+    9: 縁の単体入力受付時間 A_edge
 */
 
 class KeyBoard {
@@ -75,35 +78,35 @@ public:
         }
 
         for (size_t i = 0; i < num_pins; i++) {
-            adc_select_input(i);
+            adc_select_input(3 - i);
             long int result = adc_read();
 
             if (result - result_ac[2] > kando[2] && i == 2 &&
                 main_timer - timer_face >= kando[4] &&
                 main_timer - timer_edge > kando[6] &&
                 main_timer - timer_j > kando[8]) {
-                key_codes[index++] = pin_keys[i].key;
+                key_codes[index++] = key_map[i];
                 changed = true;
                 timer_face = timer_j = millis();
             } else if (result - result_ac[1] > kando[1] && i == 1 &&
                        main_timer - timer_face >= kando[4] &&
                        main_timer - timer_edge > kando[6] &&
                        main_timer - timer_d > kando[8]) {
-                key_codes[index++] = pin_keys[i].key;
+                key_codes[index++] = key_map[i];
                 changed = true;
                 timer_face = timer_d = millis();
             } else if (result - result_ac[0] > kando[0] && i == 0 &&
                        main_timer - timer_edge >= kando[5] &&
                        main_timer - timer_face > kando[6] &&
-                       main_timer - timer_f > kando[8]) {
-                key_codes[index++] = pin_keys[i].key;
+                       main_timer - timer_f > kando[9]) {
+                key_codes[index++] = key_map[i];
                 changed = true;
                 timer_edge = timer_f = millis();
             } else if (result - result_ac[3] > kando[3] && i == 3 &&
                        main_timer - timer_edge >= kando[5] &&
                        main_timer - timer_face > kando[6] &&
-                       main_timer - timer_k > kando[8]) {
-                key_codes[index++] = pin_keys[i].key;
+                       main_timer - timer_k > kando[9]) {
+                key_codes[index++] = key_map[i];
                 changed = true;
                 timer_edge = timer_k = millis();
             }
