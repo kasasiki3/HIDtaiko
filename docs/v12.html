@@ -586,17 +586,18 @@
               <span class="fw-step-num">1</span>
               <span>DFU モードで PC に接続する</span>
             </div>
-            <p>マイコンボードの <strong>BOOT ボタンを押しながら USB を差し</strong>、PC と接続します。エクスプローラーにストレージとして表示されたら成功です。</p>
+            <p>マイコンボードの <strong>BOOT ボタン（左側）を押しながら USB を差し</strong>、PC と接続します。エクスプローラーにストレージとして表示されたら成功です。</p>
+            <img src="img/boot_button.jpg" class="fw-img" alt="BOOTボタンの位置">
           </div>
 
           <div class="fw-step">
             <div class="fw-step-header">
               <span class="fw-step-num">2</span>
-              <span>GitHub からファームウェアをダウンロードする</span>
+              <span>GitHub リリースからファームウェアをダウンロードする</span>
             </div>
-            <p>① 「<strong>Code</strong>」ボタンをクリック &nbsp;→&nbsp; ② 「<strong>Download ZIP</strong>」を選択してダウンロードします。</p>
-            <img src="img/fw_github.webp" class="fw-img" alt="GitHub Code → Download ZIP">
-            <p>ダウンロードした ZIP を展開してください。</p>
+            <p><a href="https://github.com/kasasiki3/HIDtaiko/releases/latest" target="_blank" rel="noopener" class="fw-release-link">🔗 リリースページを開く</a></p>
+            <p>Assets の <strong>HIDtaiko.uf2</strong>（↓矢印で示された箇所）をクリックしてダウンロードします。</p>
+            <img src="img/fw_release.png" class="fw-img" alt="リリースページ Assets から HIDtaiko.uf2 をダウンロード">
           </div>
 
           <div class="fw-step">
@@ -604,11 +605,7 @@
               <span class="fw-step-num">3</span>
               <span>.uf2 ファイルを書き込む</span>
             </div>
-            <p>展開したフォルダの中から <code>HIDtaiko.uf2</code> を探し、DFU モードで認識されたストレージへ<strong>ドラッグ＆ドロップ</strong>します。ストレージの接続が自動的に切れたら書き込み完了です。</p>
-            <div class="fw-path">
-              HIDtaiko-master &nbsp;›&nbsp; HIDtaiko_connector_rp2040 &nbsp;›&nbsp; original_uf2
-            </div>
-            <img src="img/fw_path.png" class="fw-img" alt="uf2ファイルのパス">
+            <p>ダウンロードした <code>HIDtaiko.uf2</code> を、DFU モードで認識されたストレージへ<strong>ドラッグ＆ドロップ</strong>します。ストレージの接続が自動的に切れたら書き込み完了です。</p>
           </div>
 
         </div>
@@ -627,17 +624,18 @@
               <span class="fw-step-num">1</span>
               <span>Connect in DFU mode</span>
             </div>
-            <p>Hold the <strong>BOOT button</strong> while connecting the USB cable. The device will appear as a storage drive in Explorer.</p>
+            <p>Hold the <strong>BOOT button (left side)</strong> while connecting the USB cable. The device will appear as a storage drive in Explorer.</p>
+            <img src="img/boot_button.jpg" class="fw-img" alt="BOOT button location">
           </div>
 
           <div class="fw-step">
             <div class="fw-step-header">
               <span class="fw-step-num">2</span>
-              <span>Download firmware from GitHub</span>
+              <span>Download firmware from GitHub Releases</span>
             </div>
-            <p>① Click the <strong>Code</strong> button &nbsp;→&nbsp; ② Select <strong>Download ZIP</strong> and download.</p>
-            <img src="img/fw_github.webp" class="fw-img" alt="GitHub Code → Download ZIP">
-            <p>Extract the downloaded ZIP file.</p>
+            <p><a href="https://github.com/kasasiki3/HIDtaiko/releases/latest" target="_blank" rel="noopener" class="fw-release-link">🔗 Open Releases Page</a></p>
+            <p>Click <strong>HIDtaiko.uf2</strong> under Assets (indicated by the arrow) to download.</p>
+            <img src="img/fw_release.png" class="fw-img" alt="Download HIDtaiko.uf2 from Assets on the Releases page">
           </div>
 
           <div class="fw-step">
@@ -645,11 +643,7 @@
               <span class="fw-step-num">3</span>
               <span>Flash the .uf2 file</span>
             </div>
-            <p>Find <code>HIDtaiko.uf2</code> in the extracted folder and <strong>drag &amp; drop</strong> it onto the DFU storage drive. The drive will disconnect automatically when done.</p>
-            <div class="fw-path">
-              HIDtaiko-master &nbsp;›&nbsp; HIDtaiko_connector_rp2040 &nbsp;›&nbsp; original_uf2
-            </div>
-            <img src="img/fw_path.png" class="fw-img" alt="uf2 file path">
+            <p><strong>Drag &amp; drop</strong> the downloaded <code>HIDtaiko.uf2</code> onto the DFU storage drive. The drive will disconnect automatically when done.</p>
           </div>
 
         </div>

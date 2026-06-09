@@ -767,6 +767,22 @@ details a:hover { text-decoration: underline; }
   box-shadow: 0 2px 8px rgba(0,0,0,0.07);
 }
 
+.fw-release-link {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #238636;
+  color: #fff !important;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  margin: 4px 0 8px;
+  transition: background 0.15s;
+}
+.fw-release-link:hover {
+  background: #2ea043;
+}
+
 .fw-path {
   display: inline-block;
   font-size: 12px;

@@ -32,7 +32,7 @@
 
 # ◇ Sensitivity Tuner
 
-**[→ Open Sensitivity Tuner](https://kasasiki3.github.io/HIDtaiko/)** (Chrome / Edge only)
+**[→ Open Sensitivity Tuner](https://kasasiki3.github.io/HIDtaiko/v12.html)** (Chrome / Edge only)
 
 Adjust sensitivity and delay from your browser while the connector is plugged in. Supports V1.1 (RP2040) and V1.2.
 

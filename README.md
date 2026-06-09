@@ -37,7 +37,7 @@
 
 # ◇感度変更サイト
 
-**[→ 感度変更サイトを開く](https://kasasiki3.github.io/HIDtaiko/)**（Chrome / Edge のみ対応）
+**[→ 感度変更サイトを開く](https://kasasiki3.github.io/HIDtaiko/v12.html)**（Chrome / Edge のみ対応）
 
 接続器を PC に繋いだままブラウザから感度・ディレイを調整できます。V1.1（RP2040）・V1.2 に対応。
 
