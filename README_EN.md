@@ -81,13 +81,6 @@ Both the GSS-4SA and AT3040 respond to light hits when properly mounted. The GSS
 
 ### [Sensor assembly guide](drumhead/sensor.md)
 
-| Name | Link | Qty | Total |
-|---|---|---|---|
-| GSS-4SA (AC sensor) | [Link](https://www.sensatec.co.jp/products/detail.php?product_id=97) | 1 | ¥700 |
-| AT3040 (sensor) | [Link](https://ja.aliexpress.com/item/1005007327162214.html?spm=a2g0o.order_list.order_list_main.17.6ab1585a40oRsJ&gatewayAdapt=glo2jpn) | 5 | ¥343 |
-| Cable | [Link](https://ja.aliexpress.com/item/1005005364298980.html?spm=a2g0o.order_list.order_list_main.11.1bc9585anPfqkx&gatewayAdapt=glo2jpn) | 1 set | ¥390 |
-| M2 mounting screws | [Amazon](https://www.amazon.co.jp/dp/B00AXVBDSO?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_3) | 8 | ¥700 |
-
 # Questions? DM on X.
 [lit.link](https://lit.link/kasashiki)
 

@@ -82,13 +82,6 @@ GSS-4SAとAT3040どちらもしっかりと固定することで弱い力でも�
 
 ### [センサ組み立てガイド](drumhead/sensor.md)
 
-| 名称 | リンク | 個数 | 合計 |
-|------|--------|------|------|
-| GSS-4SA（ACセンサ） | [リンク](https://www.sensatec.co.jp/products/detail.php?product_id=97) | 1個 | 700円 |
-| AT3040（センサ） | [リンク](https://ja.aliexpress.com/item/1005007327162214.html?spm=a2g0o.order_list.order_list_main.17.6ab1585a40oRsJ&gatewayAdapt=glo2jpn) | 5個 | 343円 |
-| ケーブル | [リンク](https://ja.aliexpress.com/item/1005005364298980.html?spm=a2g0o.order_list.order_list_main.11.1bc9585anPfqkx&gatewayAdapt=glo2jpn) | 1セット | 390円 |
-|固定用M2ネジ|[amazon](https://www.amazon.co.jp/dp/B00AXVBDSO?ref_=ppx_hzsearch_conn_dt_b_fed_asin_title_3)|8本|700円|
-
 
 # 質問はXのDMにお願いします。
 [lit.link](https://lit.link/kasashiki)
