@@ -11,7 +11,7 @@
 |ラワンベニヤ | 12mm | ホームセンターなど |  
 
 # 図面
-　[A4用紙4を用いた実寸設計図](drumhead/fullsizeprint)それぞれのファイルを2枚づつ印刷し、透明なテープで張り合わせてください。
+　[A4用紙4を用いた実寸設計図](https://github.com/kasasiki3/HIDtaiko/tree/master/drumhead/fullsizeprint)それぞれのファイルを2枚づつ印刷し、透明なテープで張り合わせてください。
 <img src="images\screw hole.gif" width="300px">
 
 ##### 上板の寸法
