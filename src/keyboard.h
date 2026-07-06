@@ -50,13 +50,13 @@ private:
     const uint8_t matrix_cols[3] = {4, 3, 2};
     const uint8_t matrix_map[9] = {
         HID_KEY_X,         // row0,col0 -> NORTH (maps to Switch X)
-        HID_KEY_A, // row0,col1 -> EAST  (maps to Switch A)
-        HID_KEY_L,         // row1,col1 -> L     (shoulder)
+        HID_KEY_A,         // row0,col1 -> EAST  (maps to Switch A)
+        HID_KEY_L,         // row0,col2 -> SOUTH (maps to Switch L)
         HID_KEY_Y,         // row1,col0 -> WEST  (maps to Switch Y)
-        HID_KEY_B,     // row0,col2 -> SOUTH (maps to Switch B)
+        HID_KEY_B,         // row1,col1 -> B     (mapped)
         HID_KEY_R,         // row1,col2 -> R     (shoulder)
         HID_KEY_ESCAPE,    // row2,col0 -> START (+)
-        HID_KEY_MINUS,       // row2,col1 -> SELECT (-)
+        HID_KEY_MINUS,     // row2,col1 -> SELECT (-)
         HID_KEY_HOME       // row2,col2 -> HOME (also used to toggle USB mode)
     };
 
@@ -64,6 +64,11 @@ private:
     bool corner_button_pressed = false;
     long int corner_button_last_change = 0;
     static constexpr long int CORNER_DEBOUNCE_MS = 50;
+
+    // Matrix button state tracking to emit a single input per press
+    bool matrix_button_state[9] = {false};
+    long int matrix_button_last_change[9] = {0};
+    static constexpr long int MATRIX_DEBOUNCE_MS = 20;
 
     void updateLedState() {
         // LED ON when in Switch gamepad mode, OFF when in keyboard mode
@@ -114,14 +119,16 @@ public:
             switch (key_codes[i]) {
                 // Match ITAIKO bit layout exactly:
                 // bit0: Y, bit1: B, bit2: A, bit3: X
-                case HID_KEY_P:          report.buttons |= (1 << 0); break; // Y (west)
-                case HID_KEY_ENTER:      report.buttons |= (1 << 1); break; // B (south)
-                case HID_KEY_BACKSPACE:  report.buttons |= (1 << 2); break; // A (east)
-                case HID_KEY_L:          report.buttons |= (1 << 3); break; // X (north)
+                case HID_KEY_Y:          report.buttons |= (1 << 0); break; // Y (west)
+                case HID_KEY_B:          report.buttons |= (1 << 1); break; // B (south)
+                case HID_KEY_A:          report.buttons |= (1 << 2); break; // A (east)
+                case HID_KEY_X:          report.buttons |= (1 << 3); break; // X (north)
 
                 // bit4: L, bit5: R (shoulders)
-                case HID_KEY_Q:          report.buttons |= (1 << 4); break; // L (shoulder)
-                case HID_KEY_E:          report.buttons |= (1 << 5); break; // R (shoulder)
+                case HID_KEY_L:          report.buttons |= (1 << 4); break; // L (shoulder)
+                case HID_KEY_R:          report.buttons |= (1 << 5); break; // R (shoulder)
+                case HID_KEY_Q:          report.buttons |= (1 << 4); break; // L (compat)
+                case HID_KEY_E:          report.buttons |= (1 << 5); break; // R (compat)
 
                 // bit6/7: ZL/ZR (side hits)
                 case HID_KEY_D:          report.buttons |= (1 << 6); break; // ZL (ka_left)
@@ -214,9 +221,8 @@ public:
             sleep_us(5);
             for (int r = 0; r < 3 && index < 6; ++r) {
                 bool val = gpio_get(matrix_rows[r]);
+                int pos = r * 3 + c;
                 if (val) {
-                    int pos = r * 3 + c;
-                    
                     // Special handling for corner button (row2, col2, pos=8)
                     if (pos == 8) {
                         // Corner button: also acts as HOME key but keeps its toggle behavior.
@@ -239,9 +245,21 @@ public:
                         }
                     } else {
                         uint8_t code = matrix_map[pos];
-                        if (code != HID_KEY_NONE) key_codes[index++] = code;
-                        changed = true;
+                        if (code != HID_KEY_NONE) {
+                            if (!matrix_button_state[pos] && (main_timer - matrix_button_last_change[pos]) > MATRIX_DEBOUNCE_MS) {
+                                matrix_button_state[pos] = true;
+                                matrix_button_last_change[pos] = main_timer;
+                                if (index < 6) {
+                                    key_codes[index++] = code;
+                                }
+                                changed = true;
+                            }
+                        }
                     }
+                } else if (pos < 8 && matrix_button_state[pos]) {
+                    // Release detected: clear the state so the next press can be reported again.
+                    matrix_button_state[pos] = false;
+                    matrix_button_last_change[pos] = main_timer;
                 }
             }
             // release column
