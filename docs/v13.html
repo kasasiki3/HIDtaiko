@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>HIDtaiko V1.2</title>
+  <title>HIDtaiko V1.3</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <link rel="stylesheet" href="main.css">
+  <link rel="stylesheet" href="v13.css?v=1">
   <link rel="icon" href="img/favicon.ico">
 </head>
 <body>
@@ -18,8 +18,8 @@
       <h1>HIDtaiko</h1>
       <nav class="version-nav">
         <a href="index.html" class="version-link">V1.1</a>
-        <a href="v12.html" class="version-link version-link--active">V1.2</a>
-        <a href="v13.html" class="version-link">V1.3</a>
+        <a href="v12.html" class="version-link">V1.2</a>
+        <a href="v13.html" class="version-link version-link--active">V1.3</a>
       </nav>
       <label class="ios-switch">
         <span class="ios-sw-label">JP</span>
@@ -47,7 +47,7 @@
     <div class="header-status">
       <span class="status-dot" id="status-dot"></span>
       <a class="taiko-icon" href="https://github.com/kasasiki3/HIDtaiko" target="_blank" rel="noopener" title="GitHub: kasasiki3/HIDtaiko">🥁</a>
-      <span id="situation" class="situation"></span>
+      <span id="situation" class="situation" role="status" aria-live="polite" aria-atomic="true"></span>
     </div>
   </header>
 
@@ -58,7 +58,7 @@
 
       <div class="card button-card">
         <div class="button-group">
-          <button id="connection">
+          <button id="hidConnection">
             <i class="fa-solid fa-plug btn-icon"></i>
             <span class="i18n-ja">接続</span><span class="i18n-en">Connect</span>
           </button>
@@ -78,7 +78,7 @@
       </div>
 
       <div class="card">
-        <div class="card-title">
+        <div class="card-title v13-config-heading">
           <span class="i18n-ja">感度</span><span class="i18n-en">Sensitivity</span>
         </div>
 
@@ -117,6 +117,15 @@
           <input id="volumeSlider0" class="rim-sens" type="range" min="40" max="150" step="5" value="80">
           <span class="slider-value" id="text0"></span>
         </div>
+
+        <div class="slider-row usb-mode-row">
+          <span class="label"><small class="i18n-ja">起動モード</small><small class="i18n-en">Startup mode</small></span>
+          <label class="ios-switch ios-switch--light">
+            <span class="ios-sw-label" id="usbModeName">PC</span>
+            <input type="checkbox" id="usbModeSwitch" aria-label="PC / Switch">
+            <span class="ios-track"></span>
+          </label>
+        </div>
       </div>
 
       <div class="mode-toggle-row">
@@ -128,8 +137,78 @@
         </label>
       </div>
 
-      <div class="card">
+      <!-- LED brightness is intentionally hidden from the V1.3 settings UI. -->
+      <!--
+      <div class="card advanced-card">
         <div class="card-title">
+          <span class="i18n-ja">ver1.3 の追加機能</span><span class="i18n-en">ver1.3 extras</span>
+        </div>
+        <div class="slider-row">
+          <span class="label">LED<br><small class="i18n-ja">明るさ</small><small class="i18n-en">Brightness</small></span>
+          <input id="volumeSlider13" type="range" min="5" max="100" step="5" value="30">
+          <span class="slider-value" id="text13"></span>
+          <span class="unit">%</span>
+        </div>
+        <p class="note">
+          <span class="i18n-ja">
+            LEDはモードを常に表示します。<b>PCモード＝青 / Switchモード＝赤</b>です。<br>
+            明るさは5〜100%で調整できます。
+          </span>
+          <span class="i18n-en">
+            The LED always shows the active mode: <b>PC mode = blue / Switch mode = red</b>.<br>
+            Brightness is adjustable from 5 to 100%.
+          </span>
+        </p>
+      </div>
+      -->
+
+      <div class="card advanced-card">
+        <button type="button" class="card-title keymap-title is-collapsed" id="switchToggle">
+          <span class="i18n-ja">Switch機能</span><span class="i18n-en">Switch mode</span>
+          <i class="fa-solid fa-chevron-down keymap-chevron"></i>
+        </button>
+        <div id="switchContent" style="display: none">
+          <div class="slider-row">
+            <span class="label"><small class="i18n-ja">SW1</small><small class="i18n-en">SW1</small></span>
+            <select id="sw1Use">
+              <option value="1" selected>使う / Use (ver1.2+)</option>
+              <option value="0">使わない / Ignore (ver1.1)</option>
+            </select>
+          </div>
+          <div class="slider-row">
+            <span class="label"><small class="i18n-ja">キー配置</small><small class="i18n-en">Key layout</small></span>
+            <select id="keyLayout">
+              <option value="0" selected>Proコン配置 / Pro Controller</option>
+              <option value="1">タタコン配置 / Tatacon</option>
+            </select>
+          </div>
+          <div class="slider-row">
+            <span class="label"><small class="i18n-ja">押下時間</small><small class="i18n-en">Hold</small></span>
+            <input id="volumeSlider10" type="range" min="10" max="60" step="1" value="25">
+            <span class="slider-value" id="text10"></span>
+            <span class="unit">ms</span>
+          </div>
+          <div class="slider-row">
+            <span class="label"><small class="i18n-ja">入力分散</small><small class="i18n-en">Spread</small></span>
+            <select id="spreadMode">
+              <option value="0">1ボタン / 1 button</option>
+              <option value="1" selected>2ボタン / 2 buttons</option>
+              <option value="2">3ボタン以上 / 3+ buttons</option>
+            </select>
+          </div>
+          <div class="slider-row">
+            <span class="label"><small class="i18n-ja">USB識別子</small><small class="i18n-en">USB ID</small></span>
+            <select id="switchPid">
+              <option value="0" selected>HORIPAD S (0x0092)</option>
+              <option value="1">HORIPAD (0x00C1)</option>
+              <option value="2">Tatacon (0x00F0)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title v13-config-heading">
           <span class="i18n-ja">ディレイ</span><span class="i18n-en">Delay</span>
         </div>
 
@@ -205,10 +284,10 @@
       </div>
 
       <div class="card">
-        <div class="card-title keymap-title is-collapsed" id="keymapToggle">
+        <button type="button" class="card-title keymap-title v13-config-heading is-collapsed" id="keymapToggle">
           <span class="i18n-ja">キー配置</span><span class="i18n-en">Key Layout</span>
           <i class="fa-solid fa-chevron-down keymap-chevron"></i>
-        </div>
+        </button>
         <div id="keymapContent" style="display: none">
         <div class="keymap-buttons">
           <button id="keyMapSendButton">
@@ -250,15 +329,98 @@
         </div>
         </div>
       </div>
+
+      <div class="card advanced-card">
+        <button type="button" class="card-title keymap-title v13-config-heading is-collapsed" id="statToggle">
+          <span class="i18n-ja">計測</span><span class="i18n-en">Diagnostics</span>
+          <i class="fa-solid fa-chevron-down keymap-chevron"></i>
+        </button>
+        <div id="statContent" style="display: none">
+          <div class="keymap-buttons">
+            <button id="statResetButton">
+              <i class="fa-solid fa-stopwatch btn-icon"></i>
+              <span class="i18n-ja">計測開始</span><span class="i18n-en">Start</span>
+            </button>
+            <button id="statReadButton">
+              <i class="fa-solid fa-chart-simple btn-icon"></i>
+              <span class="i18n-ja">結果を読む</span><span class="i18n-en">Read</span>
+            </button>
+          </div>
+          <p class="stat-hint">
+            <span class="i18n-ja">「計測開始」で統計をリセットし、叩いたあと「結果を読む」。<br>
+              <strong>叩かずに</strong>測ればノイズフロア（＝感度を下げられる下限）。<br>
+              <strong>1箇所だけ</strong>叩けば、他の列がそのままクロストーク量。<br>
+              最大デルタの色は<strong>打数が0の列だけ</strong>付きます。叩いた列のデルタは
+              「その打の強さ」であって、感度を超えるのは当たり前なので判断に使えません。<br>
+              <strong>「打→送信」はSwitchモードでも読めます</strong>（「接続」で繋いでから）。
+              PCモードと同じ指標なので、<strong>両モードで測って比べれば「Switchだけ遅い」かが分かります</strong>。
+              Switchモードでは最大デルタとLEDの行は出ません。</span>
+            <span class="i18n-en">"Start" resets the counters. Hit the drum, then "Read".<br>
+              Measure <strong>without hitting</strong> to get the noise floor (the lower bound for sensitivity).<br>
+              Hit <strong>one pad only</strong> and the other columns are the crosstalk.<br>
+              Peak delta is colored <strong>only for columns with 0 hits</strong> — on a pad you hit,
+              the delta is just how hard you hit it and always exceeds the threshold.</span>
+          </p>
+          <div class="stat-scroll">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th><span class="i18n-ja">左縁</span><span class="i18n-en">L.Rim</span></th>
+                  <th><span class="i18n-ja">左面</span><span class="i18n-en">L.Don</span></th>
+                  <th><span class="i18n-ja">右面</span><span class="i18n-en">R.Don</span></th>
+                  <th><span class="i18n-ja">右縁</span><span class="i18n-en">R.Rim</span></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th><span class="i18n-ja">最大デルタ</span><span class="i18n-en">Peak delta</span></th>
+                  <td id="statD0">–</td><td id="statD1">–</td><td id="statD2">–</td><td id="statD3">–</td>
+                </tr>
+                <tr>
+                  <th><span class="i18n-ja">現在の感度</span><span class="i18n-en">Threshold</span></th>
+                  <td id="statK0">–</td><td id="statK1">–</td><td id="statK2">–</td><td id="statK3">–</td>
+                </tr>
+                <tr>
+                  <th><span class="i18n-ja">検出打数</span><span class="i18n-en">Hits</span></th>
+                  <td id="statH0">–</td><td id="statH1">–</td><td id="statH2">–</td><td id="statH3">–</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="stat-scroll">
+            <table class="stat-table">
+              <tbody>
+                <tr>
+                  <th><span class="i18n-ja">サンプリング周期</span><span class="i18n-en">Sample period</span></th>
+                  <td>min <span id="statMin">–</span> / avg <span id="statAvg">–</span> / max <span id="statMax">–</span> µs</td>
+                </tr>
+                <tr>
+                  <th><span class="i18n-ja">サンプル数</span><span class="i18n-en">Samples</span></th>
+                  <td id="statCnt">–</td>
+                </tr>
+                <tr>
+                  <th><span class="i18n-ja">打→送信</span><span class="i18n-en">Hit→report</span></th>
+                  <td>平均 <span id="statLatAvg">–</span> / max <span id="statLatMax">–</span> µs
+                      / <span id="statLatN">–</span> <span class="i18n-ja">件</span><span class="i18n-en">samples</span></td>
+                </tr>
+                <tr>
+                  <th><span class="i18n-ja">LED書き込み</span><span class="i18n-en">LED write</span></th>
+                  <td>平均 <span id="statLedAvg">–</span> ns / max <span id="statLedMax">–</span> µs
+                      / <span id="statLedN">–</span> <span class="i18n-ja">回</span><span class="i18n-en">calls</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ── Explanation ── -->
     <aside class="explanation-panel">
 
       <details open>
-        <summary>
-          <span class="i18n-ja">使い方</span><span class="i18n-en">How to Use</span>
-        </summary>
+        <summary><h2><span class="i18n-ja">使い方</span><span class="i18n-en">How to Use</span></h2></summary>
         <div class="beginner-explain">
           <div class="detail-body i18n-ja">
             <ol>
@@ -306,9 +468,7 @@
       </details>
 
       <details>
-        <summary>
-          <span class="i18n-ja">コネクタ配線</span><span class="i18n-en">Connector Wiring</span>
-        </summary>
+        <summary><h2><span class="i18n-ja">コネクタ配線</span><span class="i18n-en">Connector Wiring</span></h2></summary>
         <div class="detail-body i18n-ja">
           <div class="wiring-warning">
             <span class="wiring-warning-icon">⚠</span>
@@ -354,56 +514,54 @@
       </details>
 
       <details>
-        <summary>
-          <span class="i18n-ja">各項目の説明</span><span class="i18n-en">Parameters</span>
-        </summary>
+        <summary><h2><span class="i18n-ja">各項目の説明</span><span class="i18n-en">Parameters</span></h2></summary>
 
         <div class="beginner-explain">
           <div class="explanation-section i18n-ja">
-            <h4>感度</h4>
+            <h3>感度</h3>
             <p>各センサーの反応閾値です。<strong>値が低いほど感度が高く</strong>なります。黄色の範囲が推奨値です。多重入力が発生する場合は値を大きくしてください。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Sensitivity</h4>
+            <h3>Sensitivity</h3>
             <p>Threshold for each sensor. <strong>Lower value = higher sensitivity.</strong> The yellow zone is the recommended range. Increase the value if phantom inputs occur.</p>
           </div>
           <div class="explanation-section i18n-ja">
-            <h4>縁ディレイ</h4>
+            <h3>縁ディレイ</h3>
             <p>縁を連続で叩いたときに多重入力が起きる場合に大きくしてください。大きすぎると縁の連打が鈍くなります。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Rim Delay</h4>
+            <h3>Rim Delay</h3>
             <p>Increase if consecutive Rim hits cause phantom inputs. Too high will slow down Rim rolls.</p>
           </div>
           <div class="explanation-section i18n-ja">
-            <h4>面ディレイ</h4>
+            <h3>面ディレイ</h3>
             <p>面を連続で叩いたときに多重入力が起きる場合に大きくしてください。大きすぎると面の連打が鈍くなります。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Don Delay</h4>
+            <h3>Don Delay</h3>
             <p>Increase if consecutive Don hits cause phantom inputs. Too high will slow down Don rolls.</p>
           </div>
           <div class="explanation-section i18n-ja">
-            <h4>縁面相互ディレイ</h4>
+            <h3>縁面相互ディレイ</h3>
             <p>面を叩いたときに縁が反応する、または縁を叩いたときに面が反応する場合に大きくしてください。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Cross Delay</h4>
+            <h3>Cross Delay</h3>
             <p>Increase if hitting Don also triggers Rim, or vice versa.</p>
           </div>
           <div class="explanation-section i18n-ja">
-            <h4>公式/シミュレーター向け</h4>
+            <h3>公式/シミュレーター向け</h3>
             <p>公式アプリや一部のシミュレーターでキーが認識されない場合はONにしてください（Hdelay=20ms が適用されます）。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Official/Simulator</h4>
+            <h3>Official/Simulator</h3>
             <p>Turn ON if key inputs aren't recognized in the official app or some simulators (applies Hdelay = 20 ms).</p>
           </div>
         </div>
 
         <div class="advanced-explain">
           <div class="explanation-section i18n-ja">
-            <h4>感度</h4>
+            <h3>感度</h3>
             <div class="drum-icons">
               <div class="drum-icon-item">
                 <img src="img/スクリーンショット 2025-01-28 105332.png" alt="左縁">
@@ -425,7 +583,7 @@
             <p>各センサーの閾値です。センサーの電圧がこの値を超えるとキー入力が発生します。<strong>値が低いほど感度が高く</strong>なります。多重入力が発生する箇所は感度を上げて（値を大きく）ください。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Sensitivity</h4>
+            <h3>Sensitivity</h3>
             <div class="drum-icons">
               <div class="drum-icon-item">
                 <img src="img/スクリーンショット 2025-01-28 105332.png" alt="L.Rim">
@@ -448,56 +606,81 @@
           </div>
 
           <div class="explanation-section i18n-ja">
-            <h4>Adelay 面 / 縁 <span class="std">標準: 0 ms</span></h4>
+            <h3>Adelay 面 / 縁 <span class="std">標準: 0 ms</span></h3>
             <p>キー入力後、同じキーが再び受け付けるまでの待機時間。面と縁で個別に設定できます。叩いた箇所のみで多重入力が起きる場合に値を上げてください。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Adelay Don / Rim <span class="std">Std: 0 ms</span></h4>
+            <h3>Adelay Don / Rim <span class="std">Std: 0 ms</span></h3>
             <p>Cooldown before the same sensor can fire again. Adjustable separately for Don and Rim. Increase if a single hit causes double input on the same sensor.</p>
           </div>
 
           <div class="explanation-section i18n-ja">
-            <h4>Bdelay <span class="std">標準: 6 ms</span></h4>
+            <h3>Bdelay <span class="std">標準: 6 ms</span></h3>
             <p>面キー入力後、次の面入力を受け付けるまでの時間。大きすぎると面の連打が鈍くなります。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Bdelay <span class="std">Std: 6 ms</span></h4>
+            <h3>Bdelay <span class="std">Std: 6 ms</span></h3>
             <p>Cooldown after a Don (center) hit before another Don can fire. Too high will slow down rolls.</p>
           </div>
 
           <div class="explanation-section i18n-ja">
-            <h4>Cdelay <span class="std">標準: 13 ms</span></h4>
+            <h3>Cdelay <span class="std">標準: 13 ms</span></h3>
             <p>Bdelay の縁バージョンです。説明は Bdelay と同様です。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Cdelay <span class="std">Std: 13 ms</span></h4>
+            <h3>Cdelay <span class="std">Std: 13 ms</span></h3>
             <p>Same as Bdelay but for Rim (edge) hits.</p>
           </div>
 
           <div class="explanation-section i18n-ja">
-            <h4>Ddelay <span class="std">標準: 10 ms</span></h4>
+            <h3>Ddelay <span class="std">標準: 10 ms</span></h3>
             <p>面入力後に縁入力を制限する時間（逆も同様）。面を叩いたときに縁が多重する場合や、その逆の場合に値を上げてください。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Ddelay <span class="std">Std: 10 ms</span></h4>
+            <h3>Ddelay <span class="std">Std: 10 ms</span></h3>
             <p>Time to suppress Rim input after a Don hit (and vice versa). Increase if a Don hit also triggers a Rim, or vice versa.</p>
           </div>
 
           <div class="explanation-section i18n-ja">
-            <h4>Hdelay <span class="std">標準: 20 or 0 ms</span></h4>
+            <h3>Hdelay <span class="std">標準: 20 or 0 ms</span></h3>
             <p>公式アプリや一部シミュレーター向けの入力制限。「メモ帳では入力できるがシミュレーターでは入力できない」場合に設定してください。</p>
           </div>
           <div class="explanation-section i18n-en">
-            <h4>Hdelay <span class="std">Std: 20 or 0 ms</span></h4>
+            <h3>Hdelay <span class="std">Std: 20 or 0 ms</span></h3>
             <p>Input throttle for the official app or some simulators. Set this if inputs work in Notepad but fail in a simulator.</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h3>Switch 押下時間 <span class="std">標準: 25 ms</span></h3>
+            <p>Switchモードでの1打あたりのボタン押下時間です。短くすると連打が入りやすくなりますが、短すぎるとSwitch側が打を取りこぼします。20ms未満は非推奨です。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h3>Switch Hold <span class="std">Std: 25 ms</span></h3>
+            <p>Button hold duration per hit in Switch mode. Shorter values make rolls easier, but too short causes the Switch to drop hits. Values below 20 ms are not recommended.</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h3>Switch 入力分散 <span class="std">標準: 2系統</span></h3>
+            <p>1打ごとに使用するボタンを切り替えて、連打の上限を引き上げる機能です。通常は「2系統」のままにしてください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h3>Switch Spread <span class="std">Std: 2 buttons</span></h3>
+            <p>Rotates the button used for each hit to raise the roll speed cap. Normally keep it on "2 buttons".</p>
+          </div>
+
+          <div class="explanation-section i18n-ja">
+            <h3>Switch USB識別子 <span class="std">標準: HORIPAD S</span></h3>
+            <p>Switchに対して名乗るコントローラの種類です。通常は変更不要です。Switch 2 で認識されない場合のみ他の値を試してください。変更後はUSBを挿し直してください。</p>
+          </div>
+          <div class="explanation-section i18n-en">
+            <h3>Switch USB ID <span class="std">Std: HORIPAD S</span></h3>
+            <p>The controller type reported to the Switch. No change is normally needed. Try other values only if the Switch 2 doesn't recognize it. Re-plug the USB after changing.</p>
           </div>
         </div>
       </details>
 
       <details>
-        <summary>
-          <span class="i18n-ja">感度調整のやり方</span><span class="i18n-en">Tuning Guide</span>
-        </summary>
+        <summary><h2><span class="i18n-ja">感度調整のやり方</span><span class="i18n-en">Tuning Guide</span></h2></summary>
         <div class="beginner-explain">
           <div class="detail-body i18n-ja">
             <ol>
@@ -568,96 +751,110 @@
         </div>
       </details>
 
-      <details id="firmware-update">
-        <summary>
-          <span class="i18n-ja">ファームウェアのアップデート</span><span class="i18n-en">Firmware Update</span>
-        </summary>
+      <details>
+        <summary><h2><span class="i18n-ja">Switch機能</span><span class="i18n-en">Switch Mode</span></h2></summary>
         <div class="detail-body i18n-ja">
-
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">準備</span>
-              <span>接続器のネジを外し、基板を取り出す</span>
-            </div>
-            <img src="img/nezi.jpg" class="fw-img" alt="ネジの場所">
-          </div>
-
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">1</span>
-              <span>DFU モードで PC に接続する</span>
-            </div>
-            <p>マイコンボードの <strong>BOOT ボタン（左側）を押しながら USB を差し</strong>、PC と接続します。エクスプローラーにストレージとして表示されたら成功です。</p>
-            <img src="img/boot_button.jpg" class="fw-img" alt="BOOTボタンの位置">
-          </div>
-
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">2</span>
-              <span>GitHub リリースからファームウェアをダウンロードする</span>
-            </div>
-            <p><a href="https://github.com/kasasiki3/HIDtaiko/releases/latest" target="_blank" rel="noopener" class="fw-release-link">🔗 リリースページを開く</a></p>
-            <p>Assets の <strong>HIDtaiko.uf2</strong>（↓矢印で示された箇所）をクリックしてダウンロードします。</p>
-            <img src="img/fw_release.png" class="fw-img" alt="リリースページ Assets から HIDtaiko.uf2 をダウンロード">
-          </div>
-
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">3</span>
-              <span>.uf2 ファイルを書き込む</span>
-            </div>
-            <p>ダウンロードした <code>HIDtaiko.uf2</code> を、DFU モードで認識されたストレージへ<strong>ドラッグ＆ドロップ</strong>します。ストレージの接続が自動的に切れたら書き込み完了です。</p>
-            <p>アップデート後は、必ず感度を調整してください。</p>
-          </div>
-
-          <p><strong>補足：</strong>V1.2 ファームウェアでは配線が変更されています。上の「コネクタ配線」を確認してください。</p>
-
+          <p>この接続器は<b>Switchのタタコンとしても使えます</b>。感度とディレイはPCモードと共通です。</p>
+          <table class="wiring-table">
+            <thead>
+              <tr><th>方法</th><th>モードの切り替え方</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>切り替えスイッチ</td><td>基板のスライドスイッチ（<b>ver1.3以降の基板だけ</b>）。切り替えてからSwitchに接続するとProコンとして認識されます。</td></tr>
+              <tr><td>サイト</td><td>「感度」の<b>起動モード</b>を選び、<b>感度送信</b>で保存・切替。SW1がある基板ではSW1がPC側のときだけ効きます</td></tr>
+            </tbody>
+          </table>
+          <h3>キー配置</h3>
+          <p><b>HIDtaikoはコントローラーの配置を採用しています。</b>右縁はA、右面はB、左面は→、左縁は←です。</p>
+          <p><b>押下時間</b> — 1打あたりボタンを押しておく長さ。短いほど連打が入りますが、短すぎるとSwitchが打を取りこぼします（20ms未満は非推奨）。<br>
+            <b>入力分散</b> — 1打ごとに使うボタンを変えて連打の上限を上げる機能。通常は「2ボタン」のまま。<br>
+            <b>USB識別子</b> — Switchに名乗るコントローラの種類。<b>Switchに認識されないときだけ</b>他を試してください。変更後はUSBの挿し直しが必要です。</p>
         </div>
         <div class="detail-body i18n-en">
+          <p>The device <b>also works as a Switch TaTaCon</b>. Sensitivity and delay are shared with PC mode.</p>
+          <table class="wiring-table">
+            <thead>
+              <tr><th>How</th><th>Switching modes</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Mode switch</td><td>The slide switch on the board (<b>ver1.3 and later only</b>). Switch it, then connect to Switch to be recognized as a Pro Controller.</td></tr>
+              <tr><td>Site</td><td>Choose <b>Startup mode</b> under "Sensitivity", then press <b>Send</b> to save and switch. On boards with SW1 this only applies while SW1 is on the PC side</td></tr>
+            </tbody>
+          </table>
+          <h3>Key layout</h3>
+          <p><b>HIDtaiko uses a controller layout.</b> Right rim is A, right face is B, left face is →, and left rim is ←.</p>
+          <p><b>Hold</b> — how long each hit holds the button. Shorter lets faster rolls through, but too short and the Switch drops hits (under 20 ms is not recommended).<br>
+            <b>Spread</b> — rotates which button each hit uses to raise the roll ceiling. Leave it on "2 buttons".<br>
+            <b>USB ID</b> — which controller the device claims to be. Only try the others <b>if Switch does not recognize it</b>; re-plug the USB after changing.</p>
+        </div>
+      </details>
 
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">Prep</span>
-              <span>Remove the screws and take out the PCB</span>
-            </div>
-            <img src="img/nezi.jpg" class="fw-img" alt="Screw locations">
+      <details id="firmware-update">
+        <summary><h2><span class="i18n-ja">ファームウェアのアップデート</span><span class="i18n-en">Firmware Update</span></h2></summary>
+
+        <!-- 言語ごとに複製できない（idが重複する）ので、両方の本文の前に1つだけ置く -->
+        <div class="fw-shortcut" data-firmware-flash="uf2/hidtaiko_v13.uf2">
+          <div class="card-action">
+            <button type="button" class="fw-flash-button" data-firmware-flash-button>
+              <i class="fa-solid fa-download btn-icon"></i>
+              <span class="i18n-ja">V1.3ファームを書き込む</span><span class="i18n-en">Flash V1.3 firmware</span>
+            </button>
           </div>
-
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">1</span>
-              <span>Connect in DFU mode</span>
-            </div>
-            <p>Hold the <strong>BOOT button (left side)</strong> while connecting the USB cable. The device will appear as a storage drive in Explorer.</p>
-            <img src="img/boot_button.jpg" class="fw-img" alt="BOOT button location">
+          <p class="note fw-flash-status" data-firmware-flash-status aria-live="polite">
+            <span class="i18n-ja">接続器をDFUモードへ切り替え、V1.3ファームを書き込みます。</span>
+            <span class="i18n-en">Enters DFU mode and flashes V1.3 firmware.</span>
+          </p>
+          <div class="detail-body i18n-ja">
+            <ol>
+              <li>「接続」を押して、更新する接続器を選択します。<small>すでに接続済みなら不要です。</small></li>
+              <li>「V1.3ファームを書き込む」を押します。</li>
+              <li>接続器がDFUモードで再起動し、エクスプローラーに <strong>RPI-RP2</strong> ドライブが表示されます。</li>
+              <li>「もう一度このボタンを押してください」と表示された場合は、同じボタンをもう一度押し、表示された <strong>RPI-RP2</strong> ドライブを選択します。<small>初回のドライブ選択には、ブラウザの操作制限のため再クリックが必要です。</small></li>
+              <li>「完了しました」と表示され、接続器が再起動したら更新完了です。更新後は感度を調整してください。</li>
+            </ol>
+            <p>RPI-RP2 は書き込み専用の一時ドライブです。<code>INDEX.HTM</code> と <code>INFO_UF2.TXT</code> が見えていれば、正しいドライブです。</p>
+            <img src="img/スクリーンショット 2026-08-26 122152.png" class="fw-img" alt="エクスプローラーに表示されたRPI-RP2ドライブ">
           </div>
-
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">2</span>
-              <span>Download firmware from GitHub Releases</span>
-            </div>
-            <p><a href="https://github.com/kasasiki3/HIDtaiko/releases/latest" target="_blank" rel="noopener" class="fw-release-link">🔗 Open Releases Page</a></p>
-            <p>Click <strong>HIDtaiko.uf2</strong> under Assets (indicated by the arrow) to download.</p>
-            <img src="img/fw_release.png" class="fw-img" alt="Download HIDtaiko.uf2 from Assets on the Releases page">
+          <div class="detail-body i18n-en">
+            <ol>
+              <li>Click “Connect” and select the connector to update.<small>Skip this if it is already connected.</small></li>
+              <li>Click “Flash V1.3 firmware”.</li>
+              <li>The connector reboots into DFU mode and an <strong>RPI-RP2</strong> drive appears in Explorer.</li>
+              <li>If the page says “click the button once more”, click the same button again and select the <strong>RPI-RP2</strong> drive.<small>The browser requires this second click before the first drive selection.</small></li>
+              <li>Updating is complete when “Done” appears and the connector restarts. Re-tune the sensitivity afterward.</li>
+            </ol>
+            <p>RPI-RP2 is a temporary drive for flashing. It is the correct drive when it contains <code>INDEX.HTM</code> and <code>INFO_UF2.TXT</code>.</p>
+            <img src="img/スクリーンショット 2026-08-26 122152.png" class="fw-img" alt="RPI-RP2 drive shown in Explorer">
           </div>
+        </div>
 
-          <div class="fw-step">
-            <div class="fw-step-header">
-              <span class="fw-step-num">3</span>
-              <span>Flash the .uf2 file</span>
-            </div>
-            <p><strong>Drag &amp; drop</strong> the downloaded <code>HIDtaiko.uf2</code> onto the DFU storage drive. The drive will disconnect automatically when done.</p>
-          </div>
-
+        <div class="detail-body i18n-ja">
+          <h3>自動更新できない場合</h3>
+          <ol>
+            <li>接続器の基板を取り出し、<strong>BOOTボタンを押したまま</strong>USBを挿します。</li>
+            <li>エクスプローラーに <strong>RPI-RP2</strong> ドライブが表示されたことを確認します。</li>
+            <li><a href="uf2/hidtaiko_v13.uf2" download class="fw-release-link">V1.3ファームをダウンロード</a>します。</li>
+            <li>ダウンロードした <code>hidtaiko_v13.uf2</code> をRPI-RP2ドライブへドラッグ＆ドロップします。接続器が再起動したら完了です。</li>
+          </ol>
+        </div>
+        <div class="detail-body i18n-en">
+          <h3>If automatic updating is unavailable</h3>
+          <ol>
+            <li>Open the connector and connect USB while holding the <strong>BOOT button</strong>.</li>
+            <li>Confirm that the <strong>RPI-RP2</strong> drive appears in Explorer.</li>
+            <li><a href="uf2/hidtaiko_v13.uf2" download class="fw-release-link">Download V1.3 firmware</a>.</li>
+            <li><strong>Drag and drop</strong> <code>hidtaiko_v13.uf2</code> onto the RPI-RP2 drive. Updating is complete when the connector restarts.</li>
+          </ol>
         </div>
       </details>
 
     </aside>
   </main>
 
-  <script src="i18n.js"></script>
-  <script src="v12.js"></script>
+  <script src="v13-i18n.js?v=1"></script>
+  <script src="v13-picoboot.js?v=1"></script>
+  <script src="v13-firmware-flash.js?v=1"></script>
+  <script src="v13.js?v=135.12"></script>
   <script>
     if (sessionStorage.getItem('hidtaiko-open-fw')) {
       sessionStorage.removeItem('hidtaiko-open-fw');
