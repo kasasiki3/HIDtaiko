@@ -28,6 +28,8 @@
         how === "usb" ? "Done. The write was verified and the device is rebooting." : "Done. The device is restarting."
       );
       window.GaEvents && GaEvents.track("firmware_flash", { result: "success", version: "v13", method: how });
+      // GA4のキーイベントはイベント名単位でしか指定できないので、成功だけを別名でも撃つ
+      window.GaEvents && GaEvents.track("firmware_flash_success", { version: "v13", method: how });
     }
 
     button.addEventListener("click", async () => {
