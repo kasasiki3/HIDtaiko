@@ -76,12 +76,14 @@ BUTTON_CLICK_EVENT.addEventListener("click", async () => {
 
     setDot("connected");
     situation_alert.textContent = "V1.2接続済み"
+    window.GaEvents && GaEvents.track("device_connect", { result: "ok", version: "v12", transport: "webserial" });
 
     const data = new TextEncoder().encode("Hello, Serial!\n");
     await writer.write(data);
   } catch (error) {
     setDot("error");
     situation_alert.textContent = "接続失敗"
+    window.GaEvents && GaEvents.track("device_connect", { result: "fail", version: "v12", transport: "webserial", reason: error.name || "unknown" });
     console.error("Error:", error);
   }
 });
@@ -115,8 +117,10 @@ BUTTON_CLICK_EVENT_send.addEventListener("click", async () => {
     if (saveOk !== "OK") throw new Error("save failed: " + saveOk);
     setDot("connected");
     situation_alert.textContent = "送信・保存完了"
+    window.GaEvents && GaEvents.track("settings_apply", { result: "ok", version: "v12" });
   } catch (error) {
     setDot("error");
+    window.GaEvents && GaEvents.track("settings_apply", { result: "fail", version: "v12", reason: error.name || "unknown" });
     console.error("Error in send:", error);
   } finally {
     isBusy = false;

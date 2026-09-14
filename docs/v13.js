@@ -191,9 +191,11 @@ document.getElementById("hidConnection").addEventListener("click", async () => {
     hidDevice = dev;
     setDot("connected");
     setStatus("hidConnected");
+    window.GaEvents && GaEvents.track("device_connect", { result: "ok", version: "v13", transport: "webhid" });
   } catch (error) {
     setDot("error");
     setStatus("connectFail", error.message);
+    window.GaEvents && GaEvents.track("device_connect", { result: "fail", version: "v13", transport: "webhid", reason: error.name || "unknown" });
     console.error("Error in hid connect:", error);
   }
 });
@@ -234,12 +236,14 @@ BUTTON_CLICK_EVENT_send.addEventListener("click", async () => {
     await hidWrite([CFG_MAGIC, 0x02]);   // SAVE
     // 今のモードはVIDで分かる（0x0F0D＝Switch / 0xCAFE＝PC）。
     // 保存した起動モードと違えば保存直後に列挙し直されるので、一旦接続を切る
-    if (modeValue() !== currentUsbMode()) { await dropConnection(); setStatus("modeSwitched"); return; }
+    if (modeValue() !== currentUsbMode()) { await dropConnection(); setStatus("modeSwitched"); window.GaEvents && GaEvents.track("settings_apply", { result: "ok", version: "v13" }); return; }
     setDot("connected");
     setStatus("sent");
+    window.GaEvents && GaEvents.track("settings_apply", { result: "ok", version: "v13" });
   } catch (error) {
     setDot("error");
     setStatus("sendFail", error.message);
+    window.GaEvents && GaEvents.track("settings_apply", { result: "fail", version: "v13", reason: error.name || "unknown" });
     console.error("Error in send:", error);
   } finally {
     isBusy = false;

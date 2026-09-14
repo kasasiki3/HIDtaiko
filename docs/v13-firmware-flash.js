@@ -27,6 +27,7 @@
         how === "usb" ? "完了しました。書き込みを検証して接続器を再起動しました。" : "完了しました。接続器が再起動します。",
         how === "usb" ? "Done. The write was verified and the device is rebooting." : "Done. The device is restarting."
       );
+      window.GaEvents && GaEvents.track("firmware_flash", { result: "success", version: "v13", method: how });
     }
 
     button.addEventListener("click", async () => {
@@ -74,6 +75,7 @@
         }
       } catch (error) {
         report("書き込みに失敗しました: " + error.message, "Flashing failed: " + error.message);
+        window.GaEvents && GaEvents.track("firmware_flash", { result: "error", version: "v13", reason: error.name || "unknown" });
       } finally {
         busy = false;
         button.disabled = false;

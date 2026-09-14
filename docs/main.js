@@ -44,6 +44,7 @@ BUTTON_CLICK_EVENT.addEventListener("click", async () => {
 
     setDot("connected");
     situation_alert.textContent = "RP2040接続済み"
+    window.GaEvents && GaEvents.track("device_connect", { result: "ok", version: "v11", transport: "webserial" });
     console.log("Port connected successfully!");
 
     // 初期メッセージを送信
@@ -53,6 +54,7 @@ BUTTON_CLICK_EVENT.addEventListener("click", async () => {
   } catch (error) {
     setDot("error");
     situation_alert.textContent = "接続失敗"
+    window.GaEvents && GaEvents.track("device_connect", { result: "fail", version: "v11", transport: "webserial", reason: error.name || "unknown" });
     console.error("Error:", error);
   }
 });
@@ -87,8 +89,10 @@ BUTTON_CLICK_EVENT_send.addEventListener("click", async () => {
     }
     setDot("connected");
     situation_alert.textContent = "送信完了"
+    window.GaEvents && GaEvents.track("settings_apply", { result: "ok", version: "v11" });
   } catch (error) {
     setDot("error");
+    window.GaEvents && GaEvents.track("settings_apply", { result: "fail", version: "v11", reason: error.name || "unknown" });
     console.error("Error in send:", error);
   }
 });
