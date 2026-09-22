@@ -1031,3 +1031,58 @@ select:focus {
     grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
   }
 }
+
+/* ── V1.3 誘導バナー ─────────────────────────────────── */
+.upgrade-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 11px 16px;
+  background: var(--color-accent);
+  color: var(--color-surface);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 500;
+  line-height: 1.4;
+  text-align: center;
+  transition: filter 0.2s ease;
+}
+.upgrade-banner:hover {
+  filter: brightness(0.9);
+}
+.upgrade-banner__badge {
+  background: var(--color-surface);
+  color: var(--color-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+/* flex item の既定 min-width:auto は内容幅より縮まないので、狭い画面で折り返せるよう解除する */
+.upgrade-banner__text {
+  min-width: 0;
+}
+.upgrade-banner__arrow {
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+.upgrade-banner:hover .upgrade-banner__arrow {
+  transform: translateX(4px);
+}
+
+@media (max-width: 600px) {
+  .upgrade-banner {
+    gap: 8px;
+    padding: 9px 12px;
+    font-size: 0.82rem;
+  }
+
+  .upgrade-banner__badge {
+    font-size: 0.66rem;
+    padding: 1px 7px;
+  }
+}

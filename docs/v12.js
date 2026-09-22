@@ -408,3 +408,7 @@ BUTTON_CLICK_EVENT_keymap_request.addEventListener("click", async () => {
     isBusy = false;
   }
 });
+
+document.getElementById('upgradeBanner')?.addEventListener('click', function () {
+  window.GaEvents && GaEvents.track('banner_to_v13', { from: 'v12' });
+});
