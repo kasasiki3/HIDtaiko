@@ -29,6 +29,11 @@ const situation_alert = document.getElementById("situation");
 
 let isBusy = false;
 let hidDevice = null;
+let usbDev = null;
+let cdcEpIn = 0;
+let cdcEpOut = 0;
+let cdcQueue = Promise.resolve();
+let cdcPending = null;
 
 // 更新ボタンは、このページでユーザーが接続した実機へBOOTコマンドを送る。
 window.HIDtaikoFirmwareFlasher?.setActiveHidDeviceProvider(() => hidDevice);
@@ -63,10 +68,12 @@ const MSG = {
   keyReceived: ["キー配置受信完了", "Key layout received"],
   keyReceiveFail:["キー配置受信失敗", "Key layout receive failed"],
   hidConnected:["接続済み", "Connected"],
-  hidUnsupported:["このブラウザでは接続できません。パソコン版の Chrome または Edge で開いてください（スマートフォン・Safari・Firefox は非対応です）",
-                  "This browser cannot connect. Open this page in desktop Chrome or Edge (phones, Safari and Firefox are not supported)"],
+  hidUnsupported:["このブラウザでは接続できません。パソコン版の Chrome / Edge か、Android の Chrome で開いてください（iPhone・Safari・Firefox は非対応です）",
+                  "This browser cannot connect. Open this page in desktop Chrome / Edge or Chrome for Android (iPhone, Safari and Firefox are not supported)"],
   hidNotFound: ["デバイスが見つかりません。USBケーブルを挿し直してもう一度お試しください（充電専用ケーブルでは認識しません）",
                 "No device found. Re-plug the USB cable and try again (charge-only cables will not work)"],
+  usbNotFound: ["接続器が見つかりません。スマートフォンからは PC モードの接続器にだけ接続できます。USBを挿し直してもう一度お試しください",
+                "No device found. Phones can only connect to a device in PC mode. Re-plug the USB cable and try again"],
   modeSwitched:["保存・切替完了", "Saved and switched"],
 };
 
@@ -74,6 +81,7 @@ const MSG = {
 const usbModeSwitch = document.getElementById("usbModeSwitch");
 const usbModeName = document.getElementById("usbModeName");
 function currentUsbMode() {
+  if (usbDev) return 0;
   return hidDevice ? (hidDevice.vendorId === 0x0F0D ? 1 : 0) : modeValue();
 }
 function modeValue() { return usbModeSwitch && usbModeSwitch.checked ? 1 : 0; }
@@ -99,7 +107,7 @@ function setStatus(key, detail) {
 
 // 未接続のまま操作されたときに黙って赤くなるのを防ぐ
 function requireConnection() {
-  if (hidDevice) return true;
+  if (hidDevice || usbDev) return true;
   setDot("error");
   setStatus("needConnect");
   return false;
@@ -127,7 +135,117 @@ const CFG_SYNC_KEY = 0x6A;        // キーマップのバーストの先頭（�
 const CFG_STAT_N = 10;            // 計測値の個数
 const CFG_KEY_N = 4;              // キーマップの個数
 
+// WebUSB/CDC経由の読み取りループ
+async function startCdcReader(dev, epIn) {
+  const decoder = new TextDecoder();
+  let buf = "";
+  while (usbDev === dev) {
+    let res;
+    try {
+      res = await dev.transferIn(epIn, 64);
+    } catch (e) {
+      break;
+    }
+    if (!res || !res.data) continue;
+    buf += decoder.decode(res.data, { stream: true });
+    const parts = buf.split("\n");
+    buf = parts.pop();
+    for (const raw of parts) {
+      const line = raw.replace(/\r/g, "");
+      if (!line) continue;
+      if (cdcPending) {
+        if (line === "OK") {
+          const p = cdcPending;
+          cdcPending = null;
+          p.resolve(p.lines);
+        } else {
+          cdcPending.lines.push(line);
+        }
+      }
+    }
+  }
+}
+
+// CDCコマンド送信（OKが返るまで直列化して待つ）
+function cdcCmd(line, timeoutMs = 3000) {
+  const run = () => new Promise((resolve, reject) => {
+    if (!usbDev) return reject(new Error("usb: not connected"));
+    let timer;
+    const pending = {
+      lines: [],
+      resolve: (lines) => { clearTimeout(timer); resolve(lines); },
+      reject: (err) => { clearTimeout(timer); reject(err); },
+    };
+    timer = setTimeout(() => {
+      if (cdcPending === pending) cdcPending = null;
+      pending.reject(new Error("usb: timeout"));
+    }, timeoutMs);
+    cdcPending = pending;
+    usbDev.transferOut(cdcEpOut, new TextEncoder().encode(line + "\n")).catch(err => {
+      if (cdcPending === pending) cdcPending = null;
+      pending.reject(err);
+    });
+  });
+  cdcQueue = cdcQueue.then(run, run);
+  return cdcQueue;
+}
+
+function cdcWrite(bytes) {
+  const cmd = bytes[1];
+  if (cmd === 0x01) {
+    const i = bytes[2];
+    // CDCテキストプロトコルのSENSはkando[0..14]のみ対応（15番のSW1設定は非対応）
+    if (i >= 15) return Promise.resolve();
+    return cdcCmd("SENS:" + i + "=" + (bytes[3] | (bytes[4] << 8)));
+  }
+  if (cmd === 0x02) return cdcCmd("SAVE");
+  if (cmd === 0x04) return cdcCmd("MODE:" + bytes[2]);
+  if (cmd === 0x06) return cdcCmd("KEY:" + bytes[2] + "=" + bytes[3]);
+  return Promise.reject(new Error("unsupported over USB"));
+}
+
+async function cdcBurst(cmd) {
+  let lines;
+  if (cmd === 0x03) lines = await cdcCmd("GETS");
+  else if (cmd === 0x07) lines = await cdcCmd("GETK");
+  else if (cmd === 0x05) lines = await cdcCmd("STAT");
+  else return Promise.reject(new Error("unsupported over USB"));
+
+  const map = {};
+  for (const l of lines) {
+    const idx = l.indexOf(":");
+    if (idx >= 0) map[l.slice(0, idx)] = l.slice(idx + 1);
+  }
+
+  if (cmd === 0x03) {
+    const out = [];
+    for (let i = 0; i < 15; i++) {
+      const v = parseInt(map[i], 10) || 0;
+      out.push(v & 0xFF, (v >> 8) & 0xFF);
+    }
+    out.push(parseInt(map["mode"], 10) || 0);
+    return out;
+  }
+  if (cmd === 0x07) {
+    const out = [];
+    for (let i = 0; i < 4; i++) {
+      out.push(parseInt(map[i], 10) || 0);
+    }
+    return out;
+  }
+  if (cmd === 0x05) {
+    const out = [];
+    const keys = ["min", "avg", "max", "latmax", "latavg", "latn", "h0", "h1", "h2", "h3"];
+    for (const k of keys) {
+      const v = (parseInt(map[k], 10) || 0) & 0xFFFF;
+      out.push(v & 0xFF, (v >> 8) & 0xFF);
+    }
+    return out;
+  }
+}
+
 function hidWrite(bytes, dev = hidDevice) {
+  if (usbDev) return cdcWrite(bytes);
   const buf = new Uint8Array(8);
   buf.set(bytes);
   return dev.sendReport(0, buf);
@@ -135,6 +253,7 @@ function hidWrite(bytes, dev = hidDevice) {
 
 // コマンドを投げて、入力レポートのvendorバイトを sync の次から need バイト並べ直す
 function hidBurst(cmd, sync, need, timeoutMs = 3000, minNeed = need) {
+  if (usbDev) return cdcBurst(cmd);
   // 応答待ちの間に切断されると hidDevice が null になる。開始時のデバイスを掴んで解除まで通す
   const dev = hidDevice;
   return new Promise((resolve, reject) => {
@@ -175,6 +294,7 @@ const hidReadAll = () => hidBurst(0x03, CFG_SYNC, CFG_N * 2 + 1, 3000, CFG_N_OLD
 const hidReadStat = () => hidBurst(0x05, CFG_SYNC_STAT, CFG_STAT_N * 2);
 
 document.getElementById("hidConnection").addEventListener("click", async () => {
+  if (!navigator.hid && navigator.usb) return usbConnect();
   if (!navigator.hid) { setDot("error"); setStatus("hidUnsupported"); return; }
   try {
     setDot("connecting");
@@ -200,11 +320,70 @@ document.getElementById("hidConnection").addEventListener("click", async () => {
   }
 });
 
+// WebHIDが無いAndroid Chrome用。HIDクラスはWebUSBで開けないので、PCモードだけが持つCDCへ旧テキストコマンドを送る
+async function usbConnect() {
+  try {
+    setDot("connecting");
+    setStatus("selecting");
+    let dev;
+    try {
+      dev = await navigator.usb.requestDevice({ filters: [{ vendorId: 0xCAFE }] });
+    } catch (e) {
+      if (e.name === "NotFoundError") {
+        setDot("error");
+        setStatus("usbNotFound");
+        return;
+      }
+      throw e;
+    }
+    if (!dev) { setDot("error"); setStatus("usbNotFound"); return; }
+    await dev.open();
+    if (dev.configuration === null) await dev.selectConfiguration(1);
+
+    const commIf = dev.configuration?.interfaces.find(itf => itf.alternates[0].interfaceClass === 0x02);
+    const dataIf = dev.configuration?.interfaces.find(itf => itf.alternates[0].interfaceClass === 0x0A);
+    const epIn = dataIf?.alternates[0].endpoints.find(ep => ep.direction === "in");
+    const epOut = dataIf?.alternates[0].endpoints.find(ep => ep.direction === "out");
+    if (!commIf || !dataIf || !epIn || !epOut) {
+      await dev.close();
+      throw new Error("CDC interface not found");
+    }
+
+    await dev.claimInterface(commIf.interfaceNumber);
+    await dev.claimInterface(dataIf.interfaceNumber);
+
+    // ファームのprintf(pico stdio_usb)はDTRが立っていないと応答を捨てる
+    await dev.controlTransferOut({
+      requestType: "class",
+      recipient: "interface",
+      request: 0x22,
+      value: 0x01,
+      index: commIf.interfaceNumber,
+    });
+
+    usbDev = dev;
+    cdcEpIn = epIn.endpointNumber;
+    cdcEpOut = epOut.endpointNumber;
+
+    startCdcReader(usbDev, cdcEpIn);
+    setDot("connected");
+    setStatus("hidConnected");
+    window.GaEvents && GaEvents.track("device_connect", { result: "ok", version: "v13", transport: "webusb" });
+  } catch (error) {
+    setDot("error");
+    setStatus("connectFail", error.message);
+    window.GaEvents && GaEvents.track("device_connect", { result: "fail", version: "v13", transport: "webusb", reason: error.name || "unknown" });
+    console.error("Error in usb connect:", error);
+  }
+}
+
 // 参照を残すと requireConnection() が「接続済み」と誤判定する。
 // デバイスが自分から居なくなる場面（ファーム更新モード・起動モードの切替）でも呼ぶ
 async function dropConnection() {
   try { if (hidDevice) await hidDevice.close(); } catch (e) {}
   hidDevice = null;
+  try { if (usbDev) await usbDev.close(); } catch (e) {}
+  usbDev = null;
   setDot(null);
 }
 
@@ -212,6 +391,12 @@ async function dropConnection() {
 navigator.hid?.addEventListener("disconnect", event => {
   if (event.device !== hidDevice) return;
   hidDevice = null;
+  setDot(null);
+  setStatus("disconnected");
+});
+navigator.usb?.addEventListener("disconnect", event => {
+  if (event.device !== usbDev) return;
+  usbDev = null;
   setDot(null);
   setStatus("disconnected");
 });
@@ -659,7 +844,7 @@ BUTTON_CLICK_EVENT_keymap_request.addEventListener("click", async () => {
 });
 
 // 押してから初めて非対応と分かるのでは遅い。ページを開いた時点で伝えてボタンを潰す
-if (!navigator.hid) {
+if (!navigator.hid && !navigator.usb) {
   setDot("error");
   setStatus("hidUnsupported");
   const connect = document.getElementById("hidConnection");
