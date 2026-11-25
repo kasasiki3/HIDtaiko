@@ -442,7 +442,7 @@ function applyKando(idx, val) {
   const textElement = document.getElementById(`text${idx}`);
   const volumeSlider = document.getElementById(`volumeSlider${idx}`);
   if (volumeSlider) volumeSlider.value = val;
-  if (textElement) textElement.textContent = val;
+  if (textElement) textElement.value = val;
   const spread = document.getElementById('spreadMode');
   const pid = document.getElementById('switchPid');
   const layout = document.getElementById('keyLayout');
@@ -487,12 +487,14 @@ for (const i of SLIDER_INDEXES) {
   if (!volumeSlider) continue;
 
   volumeSlider.addEventListener("input", () => {
-    textElement.textContent = volumeSlider.value;
+    textElement.value = volumeSlider.value;
     kando[i] = +volumeSlider.value;
   });
+  // 数値欄へキーボードで打った値（スライダーの目盛りに無い値も可）
+  bindSliderNumber(volumeSlider, textElement, v => { kando[i] = v; });
 
   document.addEventListener("DOMContentLoaded", () => {
-    textElement.textContent = volumeSlider.value;
+    textElement.value = volumeSlider.value;
     kando[i] = +volumeSlider.value;
   });
 }
@@ -554,7 +556,7 @@ function setBeginnerSliders() {
     kando[idx] = +s.value;
     applySensGradient(s);
     const t = document.getElementById('text' + idx);
-    if (t) t.textContent = s.value;
+    if (t) t.value = s.value;
   });
   document.querySelectorAll('.don-sens').forEach(s => {
     const idx = parseInt(s.id.replace('volumeSlider', ''));
@@ -563,7 +565,7 @@ function setBeginnerSliders() {
     kando[idx] = +s.value;
     applySensGradient(s);
     const t = document.getElementById('text' + idx);
-    if (t) t.textContent = s.value;
+    if (t) t.value = s.value;
   });
 }
 
@@ -571,6 +573,10 @@ function setAdvancedSliders() {
   document.querySelectorAll('.rim-sens, .don-sens').forEach(s => {
     s.min = 0; s.max = 500; s.step = 1;
     s.style.background = '';
+    // 5刻みの間に打ち込んだ値（例 83）は、目盛りが1刻みになったところでつまみを合わせ直す。
+    // 数値欄は常に実値を出しているのでそれに合わせる（読み込み直後はまだ空なので触らない）
+    const t = document.getElementById('text' + s.id.replace('volumeSlider', ''));
+    if (t && t.value !== '') s.value = t.value;
   });
 }
 
@@ -583,23 +589,48 @@ function syncBeginnerDelay() {
   // 「15と表示して30を送る」ことになり、見えている値と送信値が食い違う
   if (rimSlider) {
     rimSlider.value = Math.max(+rimSlider.min, Math.min(+rimSlider.max, kando[5]));
-    document.getElementById('rimDelayText').textContent = kando[5];
+    document.getElementById('rimDelayText').value = kando[5];
     kando[9] = Math.min(25, +kando[5] + 5);
     const s9 = document.getElementById('volumeSlider9');
-    if (s9) { s9.value = kando[9]; document.getElementById('text9').textContent = kando[9]; }
+    if (s9) { s9.value = kando[9]; document.getElementById('text9').value = kando[9]; }
   }
   if (donSlider) {
     donSlider.value = Math.max(+donSlider.min, Math.min(+donSlider.max, kando[4]));
-    document.getElementById('donDelayText').textContent = kando[4];
+    document.getElementById('donDelayText').value = kando[4];
   }
   if (crossSlider) {
     crossSlider.value = Math.max(+crossSlider.min, Math.min(+crossSlider.max, kando[6]));
-    document.getElementById('crossDelayText').textContent = kando[6];
+    document.getElementById('crossDelayText').value = kando[6];
   }
   kando[8] = 0;
   const s8 = document.getElementById('volumeSlider8');
-  if (s8) { s8.value = 0; document.getElementById('text8').textContent = 0; }
+  if (s8) { s8.value = 0; document.getElementById('text8').value = 0; }
   if (simToggle) simToggle.checked = kando[7] > 0;
+}
+
+// 初心者向けディレイ3本。スライダーと数値欄のどちらから変えても、高度な設定側の値を一緒に動かす
+function setRimDelay(v) {
+  document.getElementById('rimDelayText').value = v;
+  kando[5] = v;
+  kando[9] = Math.min(25, v + 5);
+  const s5 = document.getElementById('volumeSlider5');
+  const s9 = document.getElementById('volumeSlider9');
+  if (s5) { s5.value = v; document.getElementById('text5').value = v; }
+  if (s9) { s9.value = kando[9]; document.getElementById('text9').value = kando[9]; }
+}
+
+function setDonDelay(v) {
+  document.getElementById('donDelayText').value = v;
+  kando[4] = v;
+  const s4 = document.getElementById('volumeSlider4');
+  if (s4) { s4.value = v; document.getElementById('text4').value = v; }
+}
+
+function setCrossDelay(v) {
+  document.getElementById('crossDelayText').value = v;
+  kando[6] = v;
+  const s6 = document.getElementById('volumeSlider6');
+  if (s6) { s6.value = v; document.getElementById('text6').value = v; }
 }
 
 function setDelayMode(isAdvanced) {
@@ -626,38 +657,18 @@ function setExplainMode(isAdvanced) {
     syncBeginnerDelay();
   });
 
-  rimSlider.addEventListener('input', function () {
-    const v = +this.value;
-    document.getElementById('rimDelayText').textContent = v;
-    kando[5] = v;
-    kando[9] = Math.min(25, v + 5);
-    const s5 = document.getElementById('volumeSlider5');
-    const s9 = document.getElementById('volumeSlider9');
-    if (s5) { s5.value = v; document.getElementById('text5').textContent = v; }
-    if (s9) { s9.value = kando[9]; document.getElementById('text9').textContent = kando[9]; }
-  });
-
-  donSlider.addEventListener('input', function () {
-    const v = +this.value;
-    document.getElementById('donDelayText').textContent = v;
-    kando[4] = v;
-    const s4 = document.getElementById('volumeSlider4');
-    if (s4) { s4.value = v; document.getElementById('text4').textContent = v; }
-  });
-
-  crossSlider.addEventListener('input', function () {
-    const v = +this.value;
-    document.getElementById('crossDelayText').textContent = v;
-    kando[6] = v;
-    const s6 = document.getElementById('volumeSlider6');
-    if (s6) { s6.value = v; document.getElementById('text6').textContent = v; }
-  });
+  rimSlider.addEventListener('input', () => setRimDelay(+rimSlider.value));
+  donSlider.addEventListener('input', () => setDonDelay(+donSlider.value));
+  crossSlider.addEventListener('input', () => setCrossDelay(+crossSlider.value));
+  bindSliderNumber(rimSlider, document.getElementById('rimDelayText'), setRimDelay);
+  bindSliderNumber(donSlider, document.getElementById('donDelayText'), setDonDelay);
+  bindSliderNumber(crossSlider, document.getElementById('crossDelayText'), setCrossDelay);
 
   simToggle.addEventListener('change', function () {
     const v = this.checked ? 20 : 0;
     kando[7] = v;
     const s7 = document.getElementById('volumeSlider7');
-    if (s7) { s7.value = v; document.getElementById('text7').textContent = v; }
+    if (s7) { s7.value = v; document.getElementById('text7').value = v; }
   });
 })();
 
@@ -851,7 +862,7 @@ if (!navigator.hid && !navigator.usb) {
   if (connect) connect.disabled = true;
 }
 
-// スライダーとプルダウンには <label> が無く、行見出しは読み上げ名にならない。行から名前を組み立てて付ける
+// スライダー・数値欄・プルダウンには <label> が無く、行見出しは読み上げ名にならない。行から名前を組み立てて付ける
 function labelControls() {
   const other = document.body.classList.contains("is-en") ? "ja" : "en";
   // 日英の両方がDOMに居るので、表示していない側を落としてから文字を取る
@@ -865,7 +876,7 @@ function labelControls() {
     const name = textOf(row.querySelector(".pad-name") || row.querySelector(".label"));
     const card = row.closest(".card");
     const title = card ? textOf(card.querySelector(".card-title")) : "";
-    for (const control of row.querySelectorAll("input[type=range], select")) {
+    for (const control of row.querySelectorAll("input[type=range], input.slider-num, select")) {
       control.setAttribute("aria-label", (title + " " + name).trim() || control.id);
     }
   }

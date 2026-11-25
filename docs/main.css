@@ -558,6 +558,26 @@ input[type="range"]::-moz-range-thumb {
   flex-shrink: 0;
 }
 
+/* スライダーだけでは値を決めにくいので数値入力を併設する（v13.css と同じ見た目） */
+.slider-num {
+  width: 62px;
+  flex-shrink: 0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-align: right;
+  padding: 4px 4px 4px 6px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: #fafafa;
+  color: var(--color-text);
+}
+.slider-num:focus { outline: 2px solid var(--color-request); background: #fff; }
+
+@media (max-width: 560px) {
+  .slider-num { width: 56px; }
+}
+
 /* ── Explanation accordion ───────────────────────────── */
 details {
   background: var(--color-surface);

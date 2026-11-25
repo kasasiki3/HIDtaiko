@@ -124,7 +124,7 @@ BUTTON_CLICK_EVENT_request.addEventListener("click", async () => {
 
             kando[i] = value; // データを配列に格納
             volumeSlider.value = kando[i]; // スライダーを更新
-            textElement.textContent = kando[i]; // スライダー横のテキストを更新
+            textElement.value = kando[i]; // スライダー横の数値欄を更新
 
             isMatched = true; // 正しいデータを処理したらループを抜ける
           //}
@@ -165,10 +165,12 @@ for (let i = 0; i <= 8; i++) {
 
   volumeSlider.addEventListener("input", () => {
     const volume = volumeSlider.value; // スライダーの値を取得
-    textElement.textContent = volume; // スライダー横のテキストを更新
+    textElement.value = volume; // スライダー横の数値欄を更新
     kando[i] = volumeSlider.value;
-  
+
   });
+  // 数値欄へキーボードで打った値（スライダーの目盛りに無い値も可）
+  bindSliderNumber(volumeSlider, textElement, v => { kando[i] = v; });
 }
 for (let i = 0; i <= 8; i++) {
   const textElement = document.getElementById(`text${i}`);
@@ -176,7 +178,7 @@ for (let i = 0; i <= 8; i++) {
 
     document.addEventListener("DOMContentLoaded", () => {
     const volume = volumeSlider.value; // スライダーの初期値を取得
-    textElement.textContent = volume; // スライダー横のテキストを初期化
+    textElement.value = volume; // スライダー横の数値欄を初期化
     kando[i] = volumeSlider.value; // kando 配列に初期値を設定
   });
 }
